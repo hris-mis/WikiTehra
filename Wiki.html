@@ -1,339 +1,220 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WikiTEHRA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .portal-card {
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
-        .portal-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .guide-content-area, .portal-tabs, .portal-info {
-            transition: opacity 0.5s ease-in-out;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WikiTEHRA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .portal-card { transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; }
+    .portal-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    .guide-content-area, .portal-tabs, .portal-info { transition: opacity 0.5s ease-in-out; }
+  </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
-    <div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- HEADER -->
+    <header class="pb-8">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-sky-600 rounded-lg flex items-center justify-center text-white text-xl font-bold">H</div>
+          <h1 class="text-2xl font-bold text-slate-900">WikiTEHRA</h1>
+        </div>
+        <nav id="main-nav" class="space-x-4 flex"></nav>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+      <section id="portal-details-section">
+        <div class="text-center mb-12 portal-info">
+          <h2 id="portal-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">How can we help you?</h2>
+          <p id="portal-description" class="max-w-2xl mx-auto text-slate-600">
+            Guides for HR administrators and managers on payroll, employee management, and system configuration.
+          </p>
+        </div>
         
-        <header class="pb-8">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                     <div class="w-10 h-10 bg-sky-600 rounded-lg flex items-center justify-center text-white text-xl font-bold">H</div>
-                    <h1 class="text-2xl font-bold text-slate-900">HRIS Knowledge Hub</h1>
+        <!-- Search -->
+        <div class="relative mb-12">
+          <input type="text" placeholder="Search guides..." class="w-full px-6 py-4 rounded-full border border-slate-300 shadow-md focus:ring-sky-500 focus:border-sky-500 transition-colors">
+          <svg class="absolute right-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </div>
+
+        <!-- Sections -->
+        <div id="portal-sections-container" class="portal-info grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        
+        <!-- MODAL -->
+        <div id="guide-modal" class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-75 hidden">
+          <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-4xl max-h-[90vh] flex flex-col">
+              
+              <!-- Modal Header -->
+              <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                <h3 id="modal-title" class="text-2xl font-bold text-slate-900"></h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+              </div>
+              
+              <!-- Modal Content -->
+              <div class="p-6 overflow-y-auto flex-grow">
+                <div id="media-viewer-container" class="mb-6"></div>
+                <div id="guide-details" class="space-y-4">
+                  <div class="p-4 bg-sky-50 rounded-lg">
+                    <h4 class="font-bold text-sky-800">Overview</h4>
+                    <p id="modal-overview" class="text-sky-700 text-sm"></p>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-900 mb-2">Key Information</h4>
+                    <p id="modal-key-info" class="text-slate-700 text-sm"></p>
+                  </div>
+                  <div>
+                    <a id="modal-download-link" href="#" target="_blank" class="inline-flex items-center px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700 transition">
+                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                      Download Original File
+                    </a>
+                  </div>
                 </div>
-                <nav id="main-nav" class="space-x-4 flex">
-                    <!-- Portal tabs will be injected here by JS -->
-                </nav>
+              </div>
+
             </div>
-        </header>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 
-        <main>
-            <!-- Main Content Section -->
-            <section id="portal-details-section">
-                <div class="text-center mb-12 portal-info">
-                    <h2 id="portal-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">HR Portal</h2>
-                    <p id="portal-description" class="max-w-2xl mx-auto text-slate-600">
-                        Guides for HR administrators and managers on payroll, employee management, and system configuration.
-                    </p>
-                </div>
-                
-                <div class="relative mb-12">
-                     <input type="text" placeholder="Search guides..." class="w-full px-6 py-4 rounded-full border border-slate-300 shadow-md focus:ring-sky-500 focus:border-sky-500 transition-colors">
-                    <svg class="absolute right-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                    </svg>
-                </div>
-                <!-- Categories and Guides Section -->
-                <div class="portal-info grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="portal-sections-container">
-                    <!-- Sections will be rendered here -->
-                </div>
-                
-                <!-- Guide Modal -->
-                <div id="guide-modal" class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-75 hidden">
-                    <div class="flex items-center justify-center min-h-screen p-4">
-                        <div class="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-4xl max-h-[90vh] flex flex-col">
-                            <div class="flex justify-between items-center p-6 border-b border-gray-200">
-                                <h3 id="modal-title" class="text-2xl font-bold text-slate-900"></h3>
-                                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                                </button>
-                            </div>
-                            <div class="p-6 overflow-y-auto flex-grow">
-                                <div id="media-viewer-container" class="mb-6"></div>
-                                <div id="guide-details" class="space-y-4">
-                                    <div class="p-4 bg-sky-50 rounded-lg">
-                                        <h4 class="font-bold text-sky-800">Overview</h4>
-                                        <p id="modal-overview" class="text-sky-700 text-sm"></p>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-slate-900 mb-2">Key Information</h4>
-                                        <p id="modal-key-info" class="text-slate-700 text-sm">This section provides a brief summary of the content and key takeaways.</p>
-                                    </div>
-                                    <div id="download-section">
-                                        <a id="modal-download-link" href="#" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                                            Download Original File
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const portals = {
-                "HR Portal": {
-                    description: "Guides for HR administrators and managers on payroll, employee management, and system configuration.",
-                    sections: {
-                        "Administration": {
-                            "Approver Assignment": { type: "pdf", overview: "A guide on assigning approvers to employees.", file: "APPROVER ASSIGNMENT ON EMPLOYEES.pdf" },
-                            "Onboarding": { type: "pdf", overview: "A guide on the employee onboarding process.", file: "guides/Onboarding.pdf" },
-                            "Set Employee Inactive": { type: "pdf", overview: "Instructions on how to set an employee as inactive in HRIS.", file: "guides/How to Set an Employee as Inactive in HRIS.pdf" },
-                            "Work Anniversary Report": { type: "pdf", overview: "Instructions on generating an employee work anniversary report.", file: "GENERATING EMPLOYEE WORK ANNIVERSARY REPORT.pdf" },
-                            "Assign Leave Benefit": { type: "rtf", overview: "Instructions for assigning a leave benefit for testing purposes.", file: "ASSIGNING LEAVE BENEFIT FOR SAKE OF TESTING ONLYY.rtf" },
-                            "Unrouted Transaction": { type: "pdf", overview: "FAQ on unrouted transactions.", file: "FAQ - Unrouted Transaction.pdf" },
-                            "HRIS Admin Scope List": { type: "pages", overview: "A scope list for HRIS administration.", file: "HRIS_Admin_Scope List.pages" },
-                            "HRIS Email Service": { type: "text", overview: "A guide on the HRIS email service.", file: "PMC HRIS EMAIL SERVICE" },
-                            "Company Logo on Reports": { type: "text", overview: "Instructions for putting the company logo on reports.", file: "PUTTING LOGO OF COMPANY ON REPORTS:" }
-                        },
-                        "Troubleshooting": {
-                             "Approver Cannot See Requests": { type: "rtf", overview: "Troubleshooting guide for when an approver cannot see specific employee requests.", file: "APPROVER CANNOT SEE SPECIFIC EMPLOYEE REQUESTS.rtf" },
-                             "Change RD Rules": { type: "zip", overview: "Instructions to change RD rules to reflect on IAR.", file: "Change RD Rules in able to reflect on IAR.rtfd.zip" },
-                             "Leave Request Error": { type: "rtf", overview: "A guide for resolving leave request errors.", file: "LEAVE REQUEST ERROR.rtf" },
-                             "HRIS Troubleshooting": { type: "png", overview: "A screenshot related to HRIS troubleshooting.", file: "HRIS Troubleshooting.png" },
-                             "Setup Guide": { type: "video", overview: "A video guide on the setup process.", file: "Setup.mov" },
-                             "Drug Test Resolved": { type: "video", overview: "A video documenting the resolution of a drug test result issue.", file: "Drug test result resolved.mov" },
-                        }
-                    }
-                },
-                "Employee Portal": {
-                    description: "Guides for employees on using the portal to manage their profile, file requests, and view information.",
-                    sections: {
-                        "General Guides": {
-                            "Employee Portal User Guide": { type: "pdf", overview: "A full guide on using the employee portal.", file: "E@Work-User-Guide-Employee-Portal.pdf" },
-                            "Guide in Filing": { type: "docx", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "Employee Portal - Guide in Filing.docx" },
-                             "Profile Update Request": { type: "video", overview: "A video guide on the process for profile update requests.", file: "PROFILE UPDATE REQUEST.MOV" }
-                        },
-                         "Attendance & Leave": {
-                            "Attendance Adjustment": { type: "pdf", overview: "A guide on the process of adjusting employee attendance.", file: "Process of Attendance Adjustment.pdf" },
-                            "Specific EE Attendance": { type: "zip", overview: "Instructions to extract specific employee attendance records.", file: "EXTRACT SPECIFIC EE ATTENDANCE.rtfd.zip" },
-                            "Schedule & Leave Process": { type: "docx", overview: "A guide to the schedule, leave, and attendance module processes.", file: "Schedule_Leave_Attedance Module Process.docx" },
-                        },
-                        "Troubleshooting": {
-                            "Forgot Password FAQ": { type: "video", overview: "FAQ on how to reset a forgotten password.", file: "EMPLOYEE PORTAL - FORGOT PASSWORD FAQ.mp4" },
-                            "Forgot Password": { type: "video", overview: "A video guide on the forgot password process.", file: "FAQ - Forgot Password.mp4" },
-                            "Forgot to Time In/Out": { type: "video", overview: "A guide for employees who forgot to time in or out.", file: "FAQ - Forgot to Time in and Time out in Employee P.mp4" },
-                            "Cannot Access Portal": { type: "video", overview: "Troubleshooting for when an employee cannot access the portal.", file: "FAQ - Can’t access Employee Portal with sound.mp4" },
-                            "Mobile App - My Approvals": { type: "video", overview: "Learn how to refresh data on the mobile app's approvals section.", file: "MOBILE APP - MY APPROVALS (REFRESH DATA).mp4" }
-                        }
-                    }
-                },
-                "Applicant Portal": {
-                    description: "Guides on the applicant portal, hiring processes, and talent acquisition.",
-                    sections: {
-                        "Talent Acquisition": {
-                            "Talent Acquisition Guide": { type: "pdf", overview: "A comprehensive guide on the talent acquisition module.", file: "Talent Acquisitionn.pdf" },
-                            "Defining Hiring Process": { type: "pdf", overview: "Training guide on defining the hiring process.", file: "Talent Acq. 1 - Defining the Hiring Process 04232021.pdf" },
-                            "Applicant Processing Part 1": { type: "pdf", overview: "Training on processing applicants (Part 1).", file: "E_Work Talent Acquisition Training - Part 2 - Processing Applicants P1.pdf" },
-                            "Applicant Processing Part 2": { type: "pdf", overview: "Training on processing applicants (Part 2) and hiring.", file: "E_Work Talent Acquisition Training - Part 3 - Processing Applicants P2 - Hiring the Applicant.pdf" },
-                            "Processing with Action Buttons": { type: "pdf", overview: "Guide on processing applicants using action buttons.", file: "E_Work Talent Acquisition Training - Part 4 - Processing Applicants P3 - Processing Through Action Buttons.pdf" },
-                            "No Hiring Process": { type: "pdf", overview: "A guide for when no hiring process exists for a job position.", file: "NO HIRING PROCESS FOR THE JOB POSITION.pdf" },
-                            "Edit Job Description": { type: "pdf", overview: "Instructions on editing a job's description and qualifications.", file: "Edit Job Description and Qualifications.pdf" },
-                             "Talent Acquisition Email Footer": { type: "pdf", overview: "A guide on setting up the email footer for the talent acquisition module.", file: "Talent Acquisition Module_Email Footer.pdf" }
-                        },
-                        "Applicant Guides": {
-                             "Applicant Portal Registration": { type: "pdf", overview: "Guide for applicants on registration and profile completion.", file: "APPLICANT PORTAL_Registration and Profile Completion.pdf" },
-                             "Applicant Portal Document Upload": { type: "docx", overview: "Instructions for applicants to upload documents.", file: "Document upload in Applicant Portal Guide.docx" },
-                             "Applicant Portal Guide": { type: "pdf", overview: "A general guide on how to use the applicant portal.", file: "Document upload in Applicant Portal Guide (1).pdf" },
-                             "Add Applicant Portal Reminder": { type: "rtf", overview: "Instructions on how to add a reminder to the applicant portal.", file: "HOW TO ADD APPLICANT PORTAL REMINDER.rtf" },
-                             "Add Terms and Condition": { type: "rtf", overview: "Guide on adding terms and conditions to the applicant portal.", file: "HOW TO ADD TERMS AND CONDITION OF APPLICANT PORTAL.rtf" }
-                        }
-                    }
-                }
-            };
-
-            const portalNav = document.getElementById('main-nav');
-            const portalTitle = document.getElementById('portal-title');
-            const portalDescription = document.getElementById('portal-description');
-            const sectionsContainer = document.getElementById('portal-sections-container');
-            const modal = document.getElementById('guide-modal');
-            const closeModalBtn = document.getElementById('close-modal-btn');
-            const modalTitle = document.getElementById('modal-title');
-            const modalOverview = document.getElementById('modal-overview');
-            const mediaContainer = document.getElementById('media-viewer-container');
-            const modalDownloadLink = document.getElementById('modal-download-link');
-            const modalKeyInfo = document.getElementById('modal-key-info');
-            
-            let currentPortal = "HR Portal";
-            let currentTaskData = {};
-            
-            const renderPortal = (portalName) => {
-                currentPortal = portalName;
-                const portalData = portals[portalName];
-                portalTitle.textContent = portalName;
-                portalDescription.textContent = portalData.description;
-
-                portalNav.querySelectorAll('button').forEach(btn => {
-                    btn.classList.remove('bg-sky-600', 'text-white');
-                    btn.classList.add('text-slate-500', 'hover:text-slate-800', 'hover:bg-slate-100');
-                    if (btn.textContent === portalName) {
-                        btn.classList.add('bg-sky-600', 'text-white');
-                        btn.classList.remove('text-slate-500', 'hover:text-slate-800', 'hover:bg-slate-100');
-                    }
-                });
-                
-                sectionsContainer.innerHTML = '';
-                Object.keys(portalData.sections).forEach(section => {
-                    const sectionCard = document.createElement('div');
-                    sectionCard.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-200';
-                    sectionCard.innerHTML = `<h3 class="text-xl font-bold mb-4 text-slate-900">${section}</h3>`;
-                    
-                    const taskList = document.createElement('div');
-                    taskList.className = 'space-y-2';
-
-                    Object.keys(portalData.sections[section]).forEach(task => {
-                        const taskBtn = document.createElement('button');
-                        taskBtn.textContent = task;
-                        taskBtn.className = 'w-full text-left p-4 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors text-slate-700 font-medium';
-                        taskBtn.onclick = () => showGuideModal(portalData.sections[section][task], task);
-                        taskList.appendChild(taskBtn);
-                    });
-
-                    sectionCard.appendChild(taskList);
-                    sectionsContainer.appendChild(sectionCard);
-                });
-            };
-
-            const showGuideModal = (taskData, taskName) => {
-                currentTaskData = taskData;
-                modalTitle.textContent = taskName;
-                modalOverview.textContent = taskData.overview;
-                modalDownloadLink.href = taskData.file || '#';
-                modalDownloadLink.style.display = taskData.file ? 'inline-flex' : 'none';
-                modalKeyInfo.textContent = `This section provides a brief summary of the content and key takeaways from the "${taskName}" guide.`;
-
-                mediaContainer.innerHTML = '';
-                if (taskData.type === 'video') {
-                    mediaContainer.innerHTML = `
-                        <div class="aspect-video bg-slate-800 rounded-lg overflow-hidden">
-                            <video controls class="w-full h-full">
-                                <source src="${taskData.file}" type="video/mp4">
-                                <source src="${taskData.file.replace('.mov', '.mp4')}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
-                    `;
-                } else if (taskData.type === 'png') {
-                     mediaContainer.innerHTML = `<div class="w-full bg-slate-100 rounded-lg overflow-hidden"><img src="${taskData.file}" alt="${taskName}" class="w-full h-auto"></div>`;
-                } else {
-                    mediaContainer.innerHTML = `
-                        <div class="aspect-video bg-slate-800 rounded-lg flex items-center justify-center text-white">
-                            <div class="text-center">
-                                <p class="mt-2 text-slate-400">File preview not available.</p>
-                                <svg class="w-16 h-16 mx-auto text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3-3m0 0 3 3m-3-3v6m-9 6h12a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v12a2.25 2.25 0 0 0 2.25 2.25Z" />
-                                </svg>
-                            </div>
-                        </div>
-                    `;
-                }
-                modal.classList.remove('hidden');
-            };
-
-            const init = () => {
-                Object.keys(portals).forEach(portal => {
-                    const button = document.createElement('button');
-                    button.textContent = portal;
-                    button.className = `px-4 py-2 text-sm font-semibold rounded-md transition-colors`;
-                    button.onclick = () => renderPortal(portal);
-                    portalNav.appendChild(button);
-                });
-
-                renderPortal(currentPortal);
-
-                closeModalBtn.addEventListener('click', () => {
-                    modal.classList.add('hidden');
-                    const video = mediaContainer.querySelector('video');
-                    if (video) video.pause();
-                });
-            };
-
-            init();
-        });
-    </script>
-</body>
-</html>
-<script>
-function showGuideModal(taskName, taskData) {
-    const modal = document.getElementById('guideModal');
-    const mediaContainer = document.getElementById('mediaContainer');
-    const taskTitle = document.getElementById('taskTitle');
-    const downloadButton = document.getElementById('downloadButton');
-
-    taskTitle.textContent = taskName;
-
-    // Get file extension & base name
-    const ext = taskData.file.split('.').pop().toLowerCase();
-    const baseName = taskData.file.substring(0, taskData.file.lastIndexOf('.'));
-    let previewFile = taskData.file;
-
-    // Auto-PDF fallback for Word/Excel/RTF
-    if (['docx', 'doc', 'xlsx', 'xls', 'rtf'].includes(ext)) {
-        previewFile = baseName + '.pdf';
-    }
-
-    if (previewFile.endsWith('.pdf')) {
-        mediaContainer.innerHTML = `
-            <div class="w-full h-[600px] bg-slate-100 rounded-lg overflow-hidden">
-                <iframe src="${previewFile}" class="w-full h-full" style="border:none;"></iframe>
-            </div>
-        `;
-    } else if (ext === 'mp4' || ext === 'mov') {
-        mediaContainer.innerHTML = `
-            <div class="aspect-video bg-slate-800 rounded-lg overflow-hidden">
-                <video controls class="w-full h-full">
-                    <source src="${taskData.file}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-        `;
-    } else if (ext === 'png' || ext === 'jpg' || ext === 'jpeg') {
-        mediaContainer.innerHTML = `
-            <div class="w-full bg-slate-100 rounded-lg overflow-hidden">
-                <img src="${taskData.file}" alt="${taskName}" class="w-full h-auto">
-            </div>
-        `;
-    } else {
-        mediaContainer.innerHTML = `
-            <div class="h-[200px] bg-slate-200 rounded-lg flex items-center justify-center text-slate-600">
-                <p>Preview not available for this file type.</p>
-            </div>
-        `;
-    }
-
-    // Download original file (not the preview)
-    downloadButton.onclick = () => {
-        window.open(taskData.file, '_blank');
+  <!-- SCRIPT -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const portals = {
+      "HR Portal": {
+        description: "Guides for HR administrators and managers on payroll, employee management, and system configuration.",
+        sections: {
+          "Administration": {
+            "Approver Assignment": { type: "pdf", overview: "A guide on assigning approvers to employees.", file: "guides/APPROVER ASSIGNMENT ON EMPLOYEES.pdf" },
+            "Onboarding": { type: "pdf", overview: "A guide on the employee onboarding process.", file: "guides/Onboarding.pdf" },
+            "Set Employee Inactive": { type: "pdf", overview: "Instructions on how to set an employee as inactive in HRIS.", file: "guides/How to Set an Employee as Inactive in HRIS.pdf" }
+          }
+        }
+      },
+      "Employee Portal": {
+        description: "Guides for employees on using the portal to manage their profile, file requests, and view information.",
+        sections: {
+          "General Guides": {
+            "Guide in Filing": { type: "docx", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "guides/Employee Portal - Guide in Filing.docx" }
+          }
+        }
+      },
+      "Applicant Portal": {
+        description: "Guides for applicants to register, upload documents, and complete profiles.",
+        sections: {
+          "Registration": {
+            "Applicant Portal Registration": { type: "pdf", overview: "Steps for applicants to register and complete their profile.", file: "guides/APPLICANT PORTAL_Registration and Profile Completion.pdf" },
+            "Document Upload": { type: "docx", overview: "How to upload required documents in the Applicant Portal.", file: "guides/Document upload in Applicant Portal Guide.docx" }
+          }
+        }
+      }
     };
 
-    modal.classList.remove('hidden');
-}
-</script>
+    const portalNav = document.getElementById('main-nav');
+    const portalTitle = document.getElementById('portal-title');
+    const portalDescription = document.getElementById('portal-description');
+    const sectionsContainer = document.getElementById('portal-sections-container');
+    const modal = document.getElementById('guide-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const modalTitle = document.getElementById('modal-title');
+    const modalOverview = document.getElementById('modal-overview');
+    const mediaContainer = document.getElementById('media-viewer-container');
+    const modalDownloadLink = document.getElementById('modal-download-link');
+    const modalKeyInfo = document.getElementById('modal-key-info');
+
+    let currentPortal = "HR Portal";
+
+    const renderPortal = (portalName) => {
+      const portalData = portals[portalName];
+      portalTitle.textContent = portalName;
+      portalDescription.textContent = portalData.description;
+
+      sectionsContainer.innerHTML = '';
+      Object.keys(portalData.sections).forEach(section => {
+        const sectionCard = document.createElement('div');
+        sectionCard.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-200';
+        sectionCard.innerHTML = `<h3 class="text-xl font-bold mb-4 text-slate-900">${section}</h3>`;
+
+        const taskList = document.createElement('div');
+        taskList.className = 'space-y-2';
+
+        Object.keys(portalData.sections[section]).forEach(task => {
+          const taskBtn = document.createElement('button');
+          taskBtn.textContent = task;
+          taskBtn.className = 'w-full text-left p-4 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors text-slate-700 font-medium';
+          taskBtn.onclick = () => showGuideModal(portalData.sections[section][task], task);
+          taskList.appendChild(taskBtn);
+        });
+
+        sectionCard.appendChild(taskList);
+        sectionsContainer.appendChild(sectionCard);
+      });
+    };
+
+    // FIXED FUNCTION
+    const showGuideModal = (taskData, taskName) => {
+      modalTitle.textContent = taskName;
+      modalOverview.textContent = taskData.overview || '';
+      modalKeyInfo.textContent = `This section provides a brief summary of the content and key takeaways from the "${taskName}" guide.`;
+
+      // always open download in new tab
+      modalDownloadLink.href = taskData.file;
+      modalDownloadLink.setAttribute("target", "_blank");
+
+      const ext = taskData.file.split('.').pop().toLowerCase();
+      const baseName = taskData.file.substring(0, taskData.file.lastIndexOf('.'));
+      let previewFile = taskData.file;
+
+      if (['docx','doc','xlsx','xls','rtf'].includes(ext)) {
+        previewFile = baseName + '.pdf';
+      }
+
+      mediaContainer.innerHTML = '';
+      if (previewFile.endsWith('.pdf')) {
+        mediaContainer.innerHTML = `<iframe src="${previewFile}" class="w-full h-[600px] border-none"></iframe>`;
+      } else if (['mp4','mov'].includes(ext)) {
+        mediaContainer.innerHTML = `<video controls class="w-full h-[400px]">
+          <source src="${taskData.file}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>`;
+      } else if (['png','jpg','jpeg','gif'].includes(ext)) {
+        mediaContainer.innerHTML = `<img src="${taskData.file}" alt="${taskName}" class="w-full rounded-lg">`;
+      } else {
+        mediaContainer.innerHTML = `<div class="h-[200px] flex items-center justify-center bg-slate-200 text-slate-600">
+          Preview not available for this file type.
+        </div>`;
+      }
+
+      modal.classList.remove('hidden');
+    };
+
+    closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
+
+    Object.keys(portals).forEach(portal => {
+      const button = document.createElement('button');
+      button.textContent = portal;
+      button.className = 'px-4 py-2 text-sm font-semibold rounded-md transition-colors';
+      button.onclick = () => renderPortal(portal);
+      portalNav.appendChild(button);
+    });
+
+    renderPortal(currentPortal);
+  });
+  </script>
+</body>
+</html>
