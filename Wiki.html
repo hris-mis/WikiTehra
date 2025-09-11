@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HRIS Knowledge Hub</title>
+    <title>WikiTEHRA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -296,3 +296,59 @@
     </script>
 </body>
 </html>
+<script>
+function showGuideModal(taskName, taskData) {
+    const modal = document.getElementById('guideModal');
+    const mediaContainer = document.getElementById('mediaContainer');
+    const taskTitle = document.getElementById('taskTitle');
+    const downloadButton = document.getElementById('downloadButton');
+
+    taskTitle.textContent = taskName;
+
+    // Get file extension & base name
+    const ext = taskData.file.split('.').pop().toLowerCase();
+    const baseName = taskData.file.substring(0, taskData.file.lastIndexOf('.'));
+    let previewFile = taskData.file;
+
+    // Auto-PDF fallback for Word/Excel/RTF
+    if (['docx', 'doc', 'xlsx', 'xls', 'rtf'].includes(ext)) {
+        previewFile = baseName + '.pdf';
+    }
+
+    if (previewFile.endsWith('.pdf')) {
+        mediaContainer.innerHTML = `
+            <div class="w-full h-[600px] bg-slate-100 rounded-lg overflow-hidden">
+                <iframe src="${previewFile}" class="w-full h-full" style="border:none;"></iframe>
+            </div>
+        `;
+    } else if (ext === 'mp4' || ext === 'mov') {
+        mediaContainer.innerHTML = `
+            <div class="aspect-video bg-slate-800 rounded-lg overflow-hidden">
+                <video controls class="w-full h-full">
+                    <source src="${taskData.file}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        `;
+    } else if (ext === 'png' || ext === 'jpg' || ext === 'jpeg') {
+        mediaContainer.innerHTML = `
+            <div class="w-full bg-slate-100 rounded-lg overflow-hidden">
+                <img src="${taskData.file}" alt="${taskName}" class="w-full h-auto">
+            </div>
+        `;
+    } else {
+        mediaContainer.innerHTML = `
+            <div class="h-[200px] bg-slate-200 rounded-lg flex items-center justify-center text-slate-600">
+                <p>Preview not available for this file type.</p>
+            </div>
+        `;
+    }
+
+    // Download original file (not the preview)
+    downloadButton.onclick = () => {
+        window.open(taskData.file, '_blank');
+    };
+
+    modal.classList.remove('hidden');
+}
+</script>
