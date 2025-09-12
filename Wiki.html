@@ -25,12 +25,33 @@
   }
 
   .portal-card { 
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s cubic-bezier(.4,0,.2,1); 
   }
   .portal-card:hover { 
-    transform: translateY(-5px); 
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
-                0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+    transform: translateY(-8px) scale(1.03); 
+    box-shadow: 0 16px 32px -8px rgba(2,132,199,0.15), 0 4px 12px -2px rgba(0,0,0,0.08); 
+  }
+  .portal-info, .guide-content-area, .portal-tabs {
+    transition: opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.5s cubic-bezier(.4,0,.2,1);
+  }
+  .portal-info {
+    will-change: opacity, transform;
+  }
+  .active-portal {
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    filter: drop-shadow(0 2px 8px rgba(2,132,199,0.10));
+  }
+  #guide-modal {
+    transition: background 0.3s cubic-bezier(.4,0,.2,1);
+    backdrop-filter: blur(4px) saturate(1.2);
+  }
+  #guide-modal .bg-white {
+    transition: box-shadow 0.3s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
+    animation: modalPop 0.4s cubic-bezier(.4,0,.2,1);
+  }
+  @keyframes modalPop {
+    0% { transform: scale(0.95) translateY(40px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
   }
   .guide-content-area, .portal-tabs, .portal-info { 
     transition: opacity 0.5s ease-in-out; 
@@ -50,12 +71,12 @@
     
     <!-- HEADER -->
     <header class="pb-8">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 bg-sky-600 rounded-lg flex items-center justify-center text-white text-xl font-bold">H</div>
-          <h1 class="text-2xl font-bold text-slate-900">WikiTEHRA</h1>
+      <div class="flex items-center justify-between bg-white/80 rounded-2xl shadow-lg px-8 py-6 mb-6 border border-slate-200">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-gradient-to-br from-sky-600 to-sky-400 rounded-xl flex items-center justify-center text-white text-2xl font-extrabold shadow-md border-4 border-white">W</div>
+          <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight drop-shadow-sm">WikiTEHRA</h1>
         </div>
-        <nav id="main-nav" class="space-x-4 flex"></nav>
+        <nav id="main-nav" class="flex gap-2"></nav>
       </div>
     </header>
 
@@ -128,7 +149,7 @@
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const portals = {
-      "How can we help you?": {
+      "HR Portal": {
         description: "Guides for HR administrators and managers on payroll, employee management, and system configuration.",
         videos: ["videos/hr.mp4"],
         sections: {
@@ -145,6 +166,8 @@
         sections: {
           "General Guides": {
             "Guide in Filing": { type: "docx", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "guides/Employee Portal - Guide in Filing.docx" }
+            "Employee Assignment Guide": { type: "pdf", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "guides/Employee Assignment Guidex" }
+
           }
         }
       },
@@ -175,7 +198,7 @@
 
   const portalVideo = document.getElementById('portal-video');
 
-    let currentPortal = "HR Portal";
+  let currentPortal = "HR Portal";
     let activeButton = null;
 
     const renderPortal = (portalName, button) => {
@@ -200,16 +223,17 @@
       sectionsContainer.innerHTML = '';
       Object.keys(portalData.sections).forEach(section => {
         const sectionCard = document.createElement('div');
-        sectionCard.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-200';
-        sectionCard.innerHTML = `<h3 class="text-xl font-bold mb-4 text-slate-900">${section}</h3>`;
+        sectionCard.className = 'bg-gradient-to-br from-sky-50 to-white p-7 rounded-2xl shadow-lg border border-sky-100 hover:shadow-2xl transition-all duration-300 flex flex-col gap-4';
+        sectionCard.innerHTML = `<h3 class="text-2xl font-extrabold mb-3 text-sky-800 flex items-center gap-2"><svg class='w-6 h-6 text-sky-400' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M12 4v16m8-8H4'/></svg>${section}</h3>`;
 
         const taskList = document.createElement('div');
-        taskList.className = 'space-y-2';
+        taskList.className = 'space-y-3';
 
         Object.keys(portalData.sections[section]).forEach(task => {
           const taskBtn = document.createElement('button');
           taskBtn.textContent = task;
-          taskBtn.className = 'w-full text-left p-4 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors text-slate-700 font-medium';
+          taskBtn.className = 'w-full text-left p-4 rounded-xl bg-white border border-sky-100 hover:bg-sky-100 hover:shadow-md transition-all duration-200 text-sky-700 font-semibold text-lg flex items-center gap-2';
+          taskBtn.innerHTML = `<svg class='w-5 h-5 text-sky-400 flex-shrink-0' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M9 12l2 2 4-4'/></svg> <span>${task}</span>`;
           taskBtn.onclick = () => showGuideModal(portalData.sections[section][task], task);
           taskList.appendChild(taskBtn);
         });
