@@ -77,13 +77,8 @@
           </svg>
         </div>
 
-        <!-- 🎥 Video Walkthrough -->
-        <div id="portal-video" class="mb-12 hidden">
-          <video id="walkthrough-video" controls class="w-full rounded-lg shadow-lg">
-            <source src="" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
+        <!-- 🎥 Video Walkthrough (Multiple Videos Supported) -->
+        <div id="portal-video" class="mb-12 hidden flex flex-col gap-6"></div>
 
         <!-- Sections -->
         <div id="portal-sections-container" class="portal-info grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -135,7 +130,7 @@
     const portals = {
       "How can we help you?": {
         description: "Guides for HR administrators and managers on payroll, employee management, and system configuration.",
-        video: "videos/hr.mp4",
+        videos: ["videos/hr.mp4"],
         sections: {
           "Administration": {
             "Approver Assignment": { type: "pdf", overview: "A guide on assigning approvers to employees.", file: "guides/APPROVER ASSIGNMENT ON EMPLOYEES.pdf" },
@@ -146,7 +141,7 @@
       },
       "Employee Portal": {
         description: "Guides for employees on using the portal to manage their profile, file requests, and view information.",
-        video: "videos/employee.mp4",
+        videos: ["videos/employee.mp4"],
         sections: {
           "General Guides": {
             "Guide in Filing": { type: "docx", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "guides/Employee Portal - Guide in Filing.docx" }
@@ -178,8 +173,7 @@
     const modalKeyInfo = document.getElementById('modal-key-info');
     const searchInput = document.getElementById('searchInput');
 
-    const portalVideo = document.getElementById('portal-video');
-    const walkthroughVideo = document.getElementById('walkthrough-video');
+  const portalVideo = document.getElementById('portal-video');
 
     let currentPortal = "HR Portal";
     let activeButton = null;
@@ -189,13 +183,18 @@
       portalTitle.textContent = portalName;
       portalDescription.textContent = portalData.description;
 
-      // 🎥 Show/Hide video
-      if (portalData.video) {
+      // 🎥 Show/Hide videos (multiple)
+      if (portalData.videos && portalData.videos.length > 0) {
         portalVideo.classList.remove("hidden");
-        walkthroughVideo.querySelector("source").src = portalData.video;
-        walkthroughVideo.load();
+        portalVideo.innerHTML = portalData.videos.map(videoSrc => `
+          <video controls class="w-full rounded-lg shadow-lg">
+            <source src="${videoSrc}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        `).join("");
       } else {
         portalVideo.classList.add("hidden");
+        portalVideo.innerHTML = "";
       }
 
       sectionsContainer.innerHTML = '';
@@ -310,7 +309,7 @@
             }
           });
         });
-      });xf
+      });
 
       if (!found) {
         sectionsContainer.innerHTML = `<p class="text-slate-500">No results found</p>`;
