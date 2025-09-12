@@ -13,15 +13,14 @@
     font-family: 'Inter', sans-serif; 
     position: relative;
     background: url('images/PMC2.png') no-repeat center center fixed;
-    background-size: cover; /* makes it scale to full screen */
+    background-size: cover;
   }
 
-  /* Overlay to keep text readable */
   body::before {
     content: "";
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255, 255, 255, 0.85); /* Adjust transparency */
+    background: rgba(255, 255, 255, 0.65);
     z-index: -1;
   }
 
@@ -35,6 +34,13 @@
   }
   .guide-content-area, .portal-tabs, .portal-info { 
     transition: opacity 0.5s ease-in-out; 
+  }
+
+  /* 🔵 Active Portal Button Effect */
+  .active-portal {
+    background-color: #0284c7; /* sky-600 */
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
 </style>
 </head>
@@ -69,6 +75,14 @@
           <svg class="absolute right-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
+        </div>
+
+        <!-- 🎥 Video Walkthrough -->
+        <div id="portal-video" class="mb-12 hidden">
+          <video id="walkthrough-video" controls class="w-full rounded-lg shadow-lg">
+            <source src="" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
         </div>
 
         <!-- Sections -->
@@ -119,8 +133,9 @@
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const portals = {
-      "HR Portal": {
+      "How can we help you?": {
         description: "Guides for HR administrators and managers on payroll, employee management, and system configuration.",
+        video: "videos/hr.mp4",
         sections: {
           "Administration": {
             "Approver Assignment": { type: "pdf", overview: "A guide on assigning approvers to employees.", file: "guides/APPROVER ASSIGNMENT ON EMPLOYEES.pdf" },
@@ -131,6 +146,7 @@
       },
       "Employee Portal": {
         description: "Guides for employees on using the portal to manage their profile, file requests, and view information.",
+        video: "videos/employee.mp4",
         sections: {
           "General Guides": {
             "Guide in Filing": { type: "docx", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "guides/Employee Portal - Guide in Filing.docx" }
@@ -139,6 +155,7 @@
       },
       "Applicant Portal": {
         description: "Guides for applicants to register, upload documents, and complete profiles.",
+        // no video here yet
         sections: {
           "Registration": {
             "Applicant Portal Registration": { type: "pdf", overview: "Steps for applicants to register and complete their profile.", file: "guides/APPLICANT PORTAL_Registration and Profile Completion.pdf" },
@@ -161,12 +178,25 @@
     const modalKeyInfo = document.getElementById('modal-key-info');
     const searchInput = document.getElementById('searchInput');
 
-    let currentPortal = "HR Portal";
+    const portalVideo = document.getElementById('portal-video');
+    const walkthroughVideo = document.getElementById('walkthrough-video');
 
-    const renderPortal = (portalName) => {
+    let currentPortal = "HR Portal";
+    let activeButton = null;
+
+    const renderPortal = (portalName, button) => {
       const portalData = portals[portalName];
       portalTitle.textContent = portalName;
       portalDescription.textContent = portalData.description;
+
+      // 🎥 Show/Hide video
+      if (portalData.video) {
+        portalVideo.classList.remove("hidden");
+        walkthroughVideo.querySelector("source").src = portalData.video;
+        walkthroughVideo.load();
+      } else {
+        portalVideo.classList.add("hidden");
+      }
 
       sectionsContainer.innerHTML = '';
       Object.keys(portalData.sections).forEach(section => {
@@ -188,6 +218,13 @@
         sectionCard.appendChild(taskList);
         sectionsContainer.appendChild(sectionCard);
       });
+
+      // 🔵 Highlight active button
+      if (activeButton) activeButton.classList.remove('active-portal');
+      if (button) {
+        button.classList.add('active-portal');
+        activeButton = button;
+      }
     };
 
     const showGuideModal = (taskData, taskName) => {
@@ -231,11 +268,17 @@
       const button = document.createElement('button');
       button.textContent = portal;
       button.className = 'px-4 py-2 text-sm font-semibold rounded-md transition-colors';
-      button.onclick = () => renderPortal(portal);
+      button.onclick = () => renderPortal(portal, button);
       portalNav.appendChild(button);
     });
 
-    renderPortal(currentPortal);
+    // default load
+    const firstBtn = portalNav.querySelector('button');
+    renderPortal(currentPortal, firstBtn);
+    if (firstBtn) {
+      firstBtn.classList.add('active-portal');
+      activeButton = firstBtn;
+    }
 
     // 🔍 Live Search
     searchInput.addEventListener("input", function () {
@@ -243,7 +286,7 @@
       sectionsContainer.innerHTML = "";
 
       if (!query) {
-        renderPortal(currentPortal);
+        renderPortal(currentPortal, activeButton);
         return;
       }
 
@@ -267,7 +310,7 @@
             }
           });
         });
-      });
+      });xf
 
       if (!found) {
         sectionsContainer.innerHTML = `<p class="text-slate-500">No results found</p>`;
