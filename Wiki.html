@@ -13,30 +13,17 @@
     font-family: 'Inter', sans-serif; 
     position: relative;
     background: url('images/PMC2.png') no-repeat center center fixed;
-<<<<<<< HEAD
     background-size: cover;
   }
-
-=======
-    background-size: cover; /* makes it scale to full screen */
-  }
-
-  /* Overlay to keep text readable */
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
   body::before {
     content: "";
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-<<<<<<< HEAD
     background: rgba(255, 255, 255, 0.65);
-=======
-    background: rgba(255, 255, 255, 0.85); /* Adjust transparency */
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
     z-index: -1;
   }
 
   .portal-card { 
-<<<<<<< HEAD
     transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s cubic-bezier(.4,0,.2,1); 
   }
   .portal-card:hover { 
@@ -64,28 +51,16 @@
   @keyframes modalPop {
     0% { transform: scale(0.95) translateY(40px); opacity: 0; }
     100% { transform: scale(1) translateY(0); opacity: 1; }
-=======
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
-  }
-  .portal-card:hover { 
-    transform: translateY(-5px); 
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
-                0 4px 6px -2px rgba(0, 0, 0, 0.05); 
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
   }
   .guide-content-area, .portal-tabs, .portal-info { 
     transition: opacity 0.5s ease-in-out; 
   }
-<<<<<<< HEAD
-
   /* 🔵 Active Portal Button Effect */
   .active-portal {
     background-color: #0284c7; /* sky-600 */
     color: white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
-=======
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
 </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -94,21 +69,12 @@
     
     <!-- HEADER -->
     <header class="pb-8">
-<<<<<<< HEAD
-      <div class="flex items-center justify-between bg-white/80 rounded-2xl shadow-lg px-8 py-6 mb-6 border border-slate-200">
-        <div class="flex items-center space-x-4">
-          <div class="w-12 h-12 bg-gradient-to-br from-sky-600 to-sky-400 rounded-xl flex items-center justify-center text-white text-2xl font-extrabold shadow-md border-4 border-white">W</div>
-          <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight drop-shadow-sm">WikiTEHRA</h1>
-        </div>
-        <nav id="main-nav" class="flex gap-2"></nav>
-=======
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <div class="w-10 h-10 bg-sky-600 rounded-lg flex items-center justify-center text-white text-xl font-bold">H</div>
           <h1 class="text-2xl font-bold text-slate-900">WikiTEHRA</h1>
         </div>
         <nav id="main-nav" class="space-x-4 flex"></nav>
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
       </div>
     </header>
 
@@ -130,49 +96,40 @@
           </svg>
         </div>
 
-<<<<<<< HEAD
-        <!-- 🎥 Video Walkthrough (Multiple Videos Supported) -->
-        <div id="portal-video" class="mb-12 hidden flex flex-col gap-6"></div>
-
-=======
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
         <!-- Sections -->
         <div id="portal-sections-container" class="portal-info grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         
         <!-- MODAL -->
-        <div id="guide-modal" class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-75 hidden">
-          <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-4xl max-h-[90vh] flex flex-col">
-              
+        <div id="guide-modal" class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-70 hidden flex items-center justify-center">
+          <div class="flex items-center justify-center min-h-screen p-4 w-full">
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden w-full max-w-3xl max-h-[90vh] flex flex-col border border-sky-100 animate-fadeIn">
               <!-- Modal Header -->
-              <div class="flex justify-between items-center p-6 border-b border-gray-200">
-                <h3 id="modal-title" class="text-2xl font-bold text-slate-900"></h3>
-                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 transition-colors">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              <div class="flex justify-between items-center p-6 border-b border-sky-100 bg-gradient-to-r from-sky-50 to-white">
+                <h3 id="modal-title" class="text-3xl font-extrabold text-sky-800 tracking-tight"></h3>
+                <button id="close-modal-btn" class="text-sky-400 hover:text-sky-600 transition-colors rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-sky-300">
+                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
               </div>
-              
               <!-- Modal Content -->
-              <div class="p-6 overflow-y-auto flex-grow">
-                <div id="media-viewer-container" class="mb-6"></div>
-                <div id="guide-details" class="space-y-4">
-                  <div class="p-4 bg-sky-50 rounded-lg">
-                    <h4 class="font-bold text-sky-800">Overview</h4>
-                    <p id="modal-overview" class="text-sky-700 text-sm"></p>
+              <div class="p-8 overflow-y-auto flex-grow bg-white">
+                <div id="media-viewer-container" class="mb-8 rounded-xl overflow-hidden shadow"></div>
+                <div id="guide-details" class="space-y-6">
+                  <div class="p-5 bg-sky-50 rounded-xl shadow-sm">
+                    <h4 class="font-bold text-sky-800 text-lg mb-1">Overview</h4>
+                    <p id="modal-overview" class="text-sky-700 text-base"></p>
                   </div>
                   <div>
-                    <h4 class="font-bold text-slate-900 mb-2">Key Information</h4>
-                    <p id="modal-key-info" class="text-slate-700 text-sm"></p>
+                    <h4 class="font-bold text-slate-900 mb-2 text-lg">Key Information</h4>
+                    <p id="modal-key-info" class="text-slate-700 text-base"></p>
                   </div>
                   <div>
-                    <a id="modal-download-link" href="#" target="_blank" class="inline-flex items-center px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700 transition">
-                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    <a id="modal-download-link" href="#" target="_blank" class="inline-flex items-center px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md">
+                      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                       Download Original File
                     </a>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -186,10 +143,7 @@
     const portals = {
       "HR Portal": {
         description: "Guides for HR administrators and managers on payroll, employee management, and system configuration.",
-<<<<<<< HEAD
         videos: ["videos/hr.mp4"],
-=======
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
         sections: {
           "Administration": {
             "Approver Assignment": { type: "pdf", overview: "A guide on assigning approvers to employees.", file: "guides/APPROVER ASSIGNMENT ON EMPLOYEES.pdf" },
@@ -200,27 +154,15 @@
       },
       "Employee Portal": {
         description: "Guides for employees on using the portal to manage their profile, file requests, and view information.",
-<<<<<<< HEAD
         videos: ["videos/employee.mp4"],
         sections: {
           "General Guides": {
             "Guide in Filing": { type: "docx", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "guides/Employee Portal - Guide in Filing.docx" }
-            "Employee Assignment Guide": { type: "pdf", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "guides/Employee Assignment Guidex" }
-
-=======
-        sections: {
-          "General Guides": {
-            "Guide in Filing": { type: "docx", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "guides/Employee Portal - Guide in Filing.docx" }
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
           }
         }
       },
       "Applicant Portal": {
         description: "Guides for applicants to register, upload documents, and complete profiles.",
-<<<<<<< HEAD
-        // no video here yet
-=======
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
         sections: {
           "Registration": {
             "Applicant Portal Registration": { type: "pdf", overview: "Steps for applicants to register and complete their profile.", file: "guides/APPLICANT PORTAL_Registration and Profile Completion.pdf" },
@@ -243,23 +185,19 @@
     const modalKeyInfo = document.getElementById('modal-key-info');
     const searchInput = document.getElementById('searchInput');
 
-<<<<<<< HEAD
   const portalVideo = document.getElementById('portal-video');
 
   let currentPortal = "HR Portal";
     let activeButton = null;
 
     const renderPortal = (portalName, button) => {
-=======
     let currentPortal = "HR Portal";
 
     const renderPortal = (portalName) => {
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
       const portalData = portals[portalName];
       portalTitle.textContent = portalName;
       portalDescription.textContent = portalData.description;
 
-<<<<<<< HEAD
       // 🎥 Show/Hide videos (multiple)
       if (portalData.videos && portalData.videos.length > 0) {
         portalVideo.classList.remove("hidden");
@@ -282,26 +220,12 @@
 
         const taskList = document.createElement('div');
         taskList.className = 'space-y-3';
-=======
-      sectionsContainer.innerHTML = '';
-      Object.keys(portalData.sections).forEach(section => {
-        const sectionCard = document.createElement('div');
-        sectionCard.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-200';
-        sectionCard.innerHTML = `<h3 class="text-xl font-bold mb-4 text-slate-900">${section}</h3>`;
-
-        const taskList = document.createElement('div');
-        taskList.className = 'space-y-2';
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
 
         Object.keys(portalData.sections[section]).forEach(task => {
           const taskBtn = document.createElement('button');
           taskBtn.textContent = task;
-<<<<<<< HEAD
           taskBtn.className = 'w-full text-left p-4 rounded-xl bg-white border border-sky-100 hover:bg-sky-100 hover:shadow-md transition-all duration-200 text-sky-700 font-semibold text-lg flex items-center gap-2';
           taskBtn.innerHTML = `<svg class='w-5 h-5 text-sky-400 flex-shrink-0' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M9 12l2 2 4-4'/></svg> <span>${task}</span>`;
-=======
-          taskBtn.className = 'w-full text-left p-4 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors text-slate-700 font-medium';
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
           taskBtn.onclick = () => showGuideModal(portalData.sections[section][task], task);
           taskList.appendChild(taskBtn);
         });
@@ -309,7 +233,6 @@
         sectionCard.appendChild(taskList);
         sectionsContainer.appendChild(sectionCard);
       });
-<<<<<<< HEAD
 
       // 🔵 Highlight active button
       if (activeButton) activeButton.classList.remove('active-portal');
@@ -317,8 +240,6 @@
         button.classList.add('active-portal');
         activeButton = button;
       }
-=======
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
     };
 
     const showGuideModal = (taskData, taskName) => {
@@ -362,7 +283,6 @@
       const button = document.createElement('button');
       button.textContent = portal;
       button.className = 'px-4 py-2 text-sm font-semibold rounded-md transition-colors';
-<<<<<<< HEAD
       button.onclick = () => renderPortal(portal, button);
       portalNav.appendChild(button);
     });
@@ -374,13 +294,6 @@
       firstBtn.classList.add('active-portal');
       activeButton = firstBtn;
     }
-=======
-      button.onclick = () => renderPortal(portal);
-      portalNav.appendChild(button);
-    });
-
-    renderPortal(currentPortal);
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
 
     // 🔍 Live Search
     searchInput.addEventListener("input", function () {
@@ -388,11 +301,8 @@
       sectionsContainer.innerHTML = "";
 
       if (!query) {
-<<<<<<< HEAD
         renderPortal(currentPortal, activeButton);
-=======
         renderPortal(currentPortal);
->>>>>>> 21bde94f7aa3a09cc574c87223cae42d0088b818
         return;
       }
 
@@ -422,7 +332,7 @@
         sectionsContainer.innerHTML = `<p class="text-slate-500">No results found</p>`;
       }
     });
-  });
+  // End of DOMContentLoaded
   </script>
 </body>
 </html>
