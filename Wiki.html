@@ -8,12 +8,35 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .portal-card { transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; }
-    .portal-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-    .guide-content-area, .portal-tabs, .portal-info { transition: opacity 0.5s ease-in-out; }
-  </style>
+<style>
+  body { 
+    font-family: 'Inter', sans-serif; 
+    position: relative;
+    background: url('images/PMC2.png') no-repeat center center fixed;
+    background-size: cover; /* makes it scale to full screen */
+  }
+
+  /* Overlay to keep text readable */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.85); /* Adjust transparency */
+    z-index: -1;
+  }
+
+  .portal-card { 
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
+  }
+  .portal-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+                0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+  }
+  .guide-content-area, .portal-tabs, .portal-info { 
+    transition: opacity 0.5s ease-in-out; 
+  }
+</style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
@@ -42,7 +65,7 @@
         
         <!-- Search -->
         <div class="relative mb-12">
-          <input type="text" placeholder="Search guides..." class="w-full px-6 py-4 rounded-full border border-slate-300 shadow-md focus:ring-sky-500 focus:border-sky-500 transition-colors">
+          <input id="searchInput" type="text" placeholder="Search guides..." class="w-full px-6 py-4 rounded-full border border-slate-300 shadow-md focus:ring-sky-500 focus:border-sky-500 transition-colors">
           <svg class="absolute right-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
@@ -136,6 +159,7 @@
     const mediaContainer = document.getElementById('media-viewer-container');
     const modalDownloadLink = document.getElementById('modal-download-link');
     const modalKeyInfo = document.getElementById('modal-key-info');
+    const searchInput = document.getElementById('searchInput');
 
     let currentPortal = "HR Portal";
 
@@ -166,13 +190,11 @@
       });
     };
 
-    // FIXED FUNCTION
     const showGuideModal = (taskData, taskName) => {
       modalTitle.textContent = taskName;
       modalOverview.textContent = taskData.overview || '';
       modalKeyInfo.textContent = `This section provides a brief summary of the content and key takeaways from the "${taskName}" guide.`;
 
-      // always open download in new tab
       modalDownloadLink.href = taskData.file;
       modalDownloadLink.setAttribute("target", "_blank");
 
@@ -214,6 +236,43 @@
     });
 
     renderPortal(currentPortal);
+
+    // 🔍 Live Search
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      sectionsContainer.innerHTML = "";
+
+      if (!query) {
+        renderPortal(currentPortal);
+        return;
+      }
+
+      let found = false;
+      Object.keys(portals).forEach(portalName => {
+        Object.keys(portals[portalName].sections).forEach(sectionName => {
+          Object.keys(portals[portalName].sections[sectionName]).forEach(taskName => {
+            if (taskName.toLowerCase().includes(query)) {
+              found = true;
+              const taskData = portals[portalName].sections[sectionName][taskName];
+              const card = document.createElement("div");
+              card.className = "bg-white p-6 rounded-xl shadow-sm border border-slate-200";
+              card.innerHTML = `
+                <h3 class="text-xl font-bold mb-4 text-slate-900">${portalName} - ${sectionName}</h3>
+                <button class="w-full text-left p-4 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors text-slate-700 font-medium">
+                  ${taskName}
+                </button>
+              `;
+              card.querySelector("button").onclick = () => showGuideModal(taskData, taskName);
+              sectionsContainer.appendChild(card);
+            }
+          });
+        });
+      });
+
+      if (!found) {
+        sectionsContainer.innerHTML = `<p class="text-slate-500">No results found</p>`;
+      }
+    });
   });
   </script>
 </body>
