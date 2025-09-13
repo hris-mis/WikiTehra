@@ -179,6 +179,7 @@
     </div>
   </div>
 </div>
+
       </section>
     </main>
   </div>
@@ -285,45 +286,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  const showGuideModal = (taskData, taskName) => {
-    modalTitle.textContent = taskName;
-    modalOverview.textContent = taskData.overview || '';
-    modalKeyInfo.textContent = `This section provides a brief summary of the content and key takeaways from the "${taskName}" guide.`;
+const showGuideModal = (taskData, taskName) => {
+  modalTitle.textContent = taskName;
+  modalOverview.textContent = taskData.overview || '';
+  modalKeyInfo.textContent = `This section provides a brief summary of the content and key takeaways from the "${taskName}" guide.`;
 
-    modalDownloadLink.href = taskData.file;
-    modalDownloadLink.setAttribute("target", "_blank");
+  modalDownloadLink.href = taskData.file;
+  modalDownloadLink.setAttribute("target", "_blank");
 
-    // ✅ Set Maximize Link (always open PDF full screen)
-const maximizeLink = document.getElementById("modal-maximize-link");
-maximizeLink.href = previewFile;  // use the PDF version if docx/doc/etc.
-maximizeLink.setAttribute("target", "_blank");
+  const ext = taskData.file.split('.').pop().toLowerCase();
+  const baseName = taskData.file.substring(0, taskData.file.lastIndexOf('.'));
+  let previewFile = taskData.file;
 
-    const ext = taskData.file.split('.').pop().toLowerCase();
-    const baseName = taskData.file.substring(0, taskData.file.lastIndexOf('.'));
-    let previewFile = taskData.file;
+  if (['docx','doc','xlsx','xls','rtf'].includes(ext)) {
+    previewFile = baseName + '.pdf';
+  }
 
-    if (['docx','doc','xlsx','xls','rtf'].includes(ext)) {
-      previewFile = baseName + '.pdf';
-    }
+  // ✅ Set Maximize Link (AFTER previewFile is ready)
+  const maximizeLink = document.getElementById("modal-maximize-link");
+  maximizeLink.href = previewFile;
+  maximizeLink.setAttribute("target", "_blank");
 
-    mediaContainer.innerHTML = '';
-    if (previewFile.endsWith('.pdf')) {
-      mediaContainer.innerHTML = `<iframe src="${previewFile}" class="w-full h-[600px] border-none"></iframe>`;
-    } else if (['mp4','mov'].includes(ext)) {
-      mediaContainer.innerHTML = `<video controls class="w-full h-[400px]">
-        <source src="${taskData.file}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>`;
-    } else if (['png','jpg','jpeg','gif'].includes(ext)) {
-      mediaContainer.innerHTML = `<img src="${taskData.file}" alt="${taskName}" class="w-full rounded-lg">`;
-    } else {
-      mediaContainer.innerHTML = `<div class="h-[200px] flex items-center justify-center bg-slate-200 text-slate-600">
-        Preview not available for this file type.
-      </div>`;
-    }
+  mediaContainer.innerHTML = '';
+  if (previewFile.endsWith('.pdf')) {
+    mediaContainer.innerHTML = `<iframe src="${previewFile}" class="w-full h-[600px] border-none"></iframe>`;
+  } else if (['mp4','mov'].includes(ext)) {
+    mediaContainer.innerHTML = `<video controls class="w-full h-[400px]">
+      <source src="${taskData.file}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>`;
+  } else if (['png','jpg','jpeg','gif'].includes(ext)) {
+    mediaContainer.innerHTML = `<img src="${taskData.file}" alt="${taskName}" class="w-full rounded-lg">`;
+  } else {
+    mediaContainer.innerHTML = `<div class="h-[200px] flex items-center justify-center bg-slate-200 text-slate-600">
+      Preview not available for this file type.
+    </div>`;
+  }
 
-    modal.classList.remove('hidden');
-  };
+  modal.classList.remove('hidden');
+};
 
   closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
 
