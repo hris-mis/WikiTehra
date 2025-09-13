@@ -11,55 +11,73 @@
 <style>
   body { 
     font-family: 'Inter', sans-serif; 
-    position: relative;
-    background: url('images/PMC2.png') no-repeat center center fixed;
-    background-size: cover;
-  }
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255, 255, 255, 0.65);
-    z-index: -1;
+    background: #f8fafc; /* light corporate background */
+    color: #1e293b; /* slate-800 */
   }
 
-  .portal-card { 
-    transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s cubic-bezier(.4,0,.2,1); 
+  /* Header */
+  header {
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
   }
-  .portal-card:hover { 
-    transform: translateY(-8px) scale(1.03); 
-    box-shadow: 0 16px 32px -8px rgba(2,132,199,0.15), 0 4px 12px -2px rgba(0,0,0,0.08); 
+
+  .logo-box {
+    width: 48px; height: 48px;
+    background: #0284c7;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 20px;
   }
-  .portal-info, .guide-content-area, .portal-tabs {
-    transition: opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.5s cubic-bezier(.4,0,.2,1);
+
+  /* Portal Card */
+  .portal-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
   }
-  .portal-info {
-    will-change: opacity, transform;
+  .portal-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
   }
-  .active-portal {
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    filter: drop-shadow(0 2px 8px rgba(2,132,199,0.10));
+
+  /* Section Headers */
+  h2.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1rem;
+    border-left: 4px solid #0284c7;
+    padding-left: 12px;
   }
-  #guide-modal {
-    transition: background 0.3s cubic-bezier(.4,0,.2,1);
-    backdrop-filter: blur(4px) saturate(1.2);
+
+  /* Video Player */
+  .video-wrapper {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
+
+  video {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* Modal */
   #guide-modal .bg-white {
-    transition: box-shadow 0.3s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
-    animation: modalPop 0.4s cubic-bezier(.4,0,.2,1);
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
   }
-  @keyframes modalPop {
-    0% { transform: scale(0.95) translateY(40px); opacity: 0; }
-    100% { transform: scale(1) translateY(0); opacity: 1; }
-  }
-  .guide-content-area, .portal-tabs, .portal-info { 
-    transition: opacity 0.5s ease-in-out; 
-  }
-  /* 🔵 Active Portal Button Effect */
-  .active-portal {
-    background-color: #0284c7; /* sky-600 */
-    color: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+  .modal-header {
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
   }
 </style>
 </head>
