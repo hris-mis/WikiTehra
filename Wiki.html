@@ -127,50 +127,58 @@
         <!-- Sections -->
         <div id="portal-sections-container" class="portal-info grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in-delay"></div>
         
-        <!-- MODAL -->
-        <div id="guide-modal" class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-70 hidden flex items-center justify-center">
-          <div class="flex items-center justify-center min-h-screen p-4 w-full">
-            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden w-full max-w-3xl max-h-[90vh] flex flex-col border border-sky-100 animate-fadeIn">
-              <!-- Modal Header -->
-              <div class="flex justify-between items-center p-6 border-b border-sky-100 bg-gradient-to-r from-sky-50 to-white">
-                <h3 id="modal-title" class="text-3xl font-extrabold text-sky-800 tracking-tight"></h3>
-                <button id="close-modal-btn" class="text-sky-400 hover:text-sky-600 transition-colors rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-sky-300">
-                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-              </div>
-              <!-- Modal Content -->
-              <div class="p-8 overflow-y-auto flex-grow bg-white">
-                <div id="media-viewer-container" class="mb-8 rounded-xl overflow-hidden shadow"></div>
-                <div id="guide-details" class="space-y-6">
-                  <div class="p-5 bg-sky-50 rounded-xl shadow-sm">
-                    <h4 class="font-bold text-sky-800 text-lg mb-1">Overview</h4>
-                    <p id="modal-overview" class="text-sky-700 text-base"></p>
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-slate-900 mb-2 text-lg">Key Information</h4>
-                    <p id="modal-key-info" class="text-slate-700 text-base"></p>
-                  </div>
-                  <div>
-                    <a id="modal-download-link" href="#" target="_blank" class="inline-flex items-center px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md">
-                      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                      Download Original File
-                    </a>
-                      <!-- ✅ New Maximize Button -->
-  <a id="modal-maximize-link" href="#" target="_blank"
-     class="inline-flex items-center px-5 py-3 bg-slate-600 text-white rounded-xl hover:bg-slate-700 transition font-semibold shadow-md">
-    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-            d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/>
-    </svg>
-    Maximize
-  </a>
-</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+<!-- MODAL -->
+<div id="guide-modal" class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-70 hidden flex items-center justify-center">
+  <div class="flex items-center justify-center min-h-screen p-4 w-full">
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden w-full max-w-3xl max-h-[90vh] flex flex-col border border-sky-100 animate-fadeIn">
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center p-6 border-b border-sky-100 bg-gradient-to-r from-sky-50 to-white">
+        <h3 id="modal-title" class="text-3xl font-extrabold text-sky-800 tracking-tight"></h3>
+        <button id="close-modal-btn" class="text-sky-400 hover:text-sky-600 transition-colors rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-sky-300">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal Content -->
+      <div class="p-8 overflow-y-auto flex-grow bg-white">
+        
+        <!-- ✅ Guide Details at the TOP -->
+        <div id="guide-details" class="space-y-6 mb-8">
+          <div class="p-5 bg-sky-50 rounded-xl shadow-sm">
+            <h4 class="font-bold text-sky-800 text-lg mb-1">Overview</h4>
+            <p id="modal-overview" class="text-sky-700 text-base"></p>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 mb-2 text-lg">Key Information</h4>
+            <p id="modal-key-info" class="text-slate-700 text-base"></p>
+          </div>
+          <div class="flex gap-3">
+            <a id="modal-download-link" href="#" target="_blank" 
+               class="inline-flex items-center px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Download Original File
+            </a>
+            <a id="modal-maximize-link" href="#" target="_blank"
+               class="inline-flex items-center px-5 py-3 bg-slate-600 text-white rounded-xl hover:bg-slate-700 transition font-semibold shadow-md">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/>
+              </svg>
+              Maximize
+            </a>
           </div>
         </div>
+
+        <!-- ✅ Media Viewer at the BOTTOM -->
+        <div id="media-viewer-container" class="rounded-xl overflow-hidden shadow"></div>
+      </div>
+    </div>
+  </div>
+</div>
       </section>
     </main>
   </div>
@@ -284,6 +292,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalDownloadLink.href = taskData.file;
     modalDownloadLink.setAttribute("target", "_blank");
+
+    // ✅ Set Maximize Link (always open PDF full screen)
+const maximizeLink = document.getElementById("modal-maximize-link");
+maximizeLink.href = previewFile;  // use the PDF version if docx/doc/etc.
+maximizeLink.setAttribute("target", "_blank");
 
     const ext = taskData.file.split('.').pop().toLowerCase();
     const baseName = taskData.file.substring(0, taskData.file.lastIndexOf('.'));
