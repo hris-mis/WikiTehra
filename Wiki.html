@@ -154,9 +154,9 @@
             <p id="modal-key-info" class="text-slate-700 text-base"></p>
           </div>
           <div class="flex gap-3">
-            <a id="modal-download-link" href="#" target="_blank" 
-               class="inline-flex items-center px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<a id="modal-download-link" href="#" download
+   class="inline-flex items-center px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                       d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
               </svg>
@@ -291,8 +291,10 @@ const showGuideModal = (taskData, taskName) => {
   modalOverview.textContent = taskData.overview || '';
   modalKeyInfo.textContent = `This section provides a brief summary of the content and key takeaways from the "${taskName}" guide.`;
 
-  modalDownloadLink.href = taskData.file;
-  modalDownloadLink.setAttribute("target", "_blank");
+modalDownloadLink.href = taskData.file;
+modalDownloadLink.setAttribute("download", "");
+modalDownloadLink.removeAttribute("target");
+
 
   const ext = taskData.file.split('.').pop().toLowerCase();
   const baseName = taskData.file.substring(0, taskData.file.lastIndexOf('.'));
