@@ -186,13 +186,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Grid for sections
     sectionsContainer.innerHTML = '';
-    const sectionGrid = document.createElement('div');
-    sectionGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8';
+  const sectionGrid = document.createElement('div');
+  sectionGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-start';
 
     Object.entries(portal.sections).forEach(([section, guides]) => {
       // Section card
-      const sectionCard = document.createElement('div');
-      sectionCard.className = 'bg-white rounded-2xl shadow-lg border border-sky-100 px-8 py-7 flex flex-col min-h-[320px] max-w-[370px] w-full mx-auto';
+  const sectionCard = document.createElement('div');
+  sectionCard.className = 'bg-white rounded-2xl shadow-lg border border-sky-100 px-8 py-7 flex flex-col min-h-[320px] w-[340px]';
 
       // Section header
       sectionCard.innerHTML = `
