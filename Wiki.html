@@ -188,32 +188,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const sectionGrid = document.createElement('div');
   sectionGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 place-items-start';
 
-    Object.entries(portal.sections).forEach(([section, guides]) => {
-      // Section card
+Object.entries(portal.sections).forEach(([section, guides]) => {
+  // Section card
   const sectionCard = document.createElement('div');
   sectionCard.className = 'bg-white rounded-2xl shadow-lg border border-sky-100 px-8 py-7 flex flex-col w-[340px] mb-8';
 
-      // Section header
-      sectionCard.innerHTML = `
-        <div class="flex items-center mb-6">
-          <span class="text-sky-500 text-2xl font-bold mr-2">+</span>
-          <span class="text-2xl font-extrabold text-slate-800">${section}</span>
-        </div>
-        <div class="flex-1">
-          <ul class="space-y-4">
-            ${Object.entries(guides).map(([task, info]) => `
-              <li>
-                <button class="w-full flex items-center px-6 py-4 rounded-xl bg-white border border-sky-100 shadow hover:bg-sky-50 transition text-left" style="word-break:break-word;" onclick="window.showGuideModal && window.showGuideModal(${JSON.stringify(info).replace(/"/g,'&quot;')}, '${task.replace(/'/g,"&#39;")}')">
-                  <span class="text-sky-500 text-xl mr-3">&#10003;</span>
-                  <span class="font-semibold text-slate-800 text-lg">${task}</span>
-                </button>
-              </li>
-            `).join('')}
-          </ul>
-        </div>
-      `;
-      sectionGrid.appendChild(sectionCard);
-    });
+  // Section header
+  const header = document.createElement('div');
+  header.className = 'flex items-center mb-6';
+  header.innerHTML = `
+    <span class="text-sky-500 text-2xl font-bold mr-2">+</span>
+    <span class="text-2xl font-extrabold text-slate-800">${section}</span>
+  `;
+  sectionCard.appendChild(header);
+
+  // Guides list
+  const ul = document.createElement('ul');
+  ul.className = 'space-y-4';
+
+  Object.entries(guides).forEach(([task, info]) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'w-full flex items-center px-6 py-4 rounded-xl bg-white border border-sky-100 shadow hover:bg-sky-50 transition text-left';
+    btn.innerHTML = `
+      <span class="text-sky-500 text-xl mr-3">&#10003;</span>
+      <span class="font-semibold text-slate-800 text-lg">${task}</span>
+    `;
+    btn.onclick = () => showGuideModal(info, task);
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+
+  sectionCard.appendChild(ul);
+  sectionGrid.appendChild(sectionCard);
+});
     sectionsContainer.appendChild(sectionGrid);
 
     // button state
@@ -272,15 +280,29 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.entries(tasks).forEach(([name, task]) => {
           if (name.toLowerCase().includes(q)) {
             found = true;
-            const card = document.createElement("div");
-            card.className = "bg-white p-6 rounded-xl shadow";
-            card.innerHTML = `<h3 class="font-bold text-lg mb-2">${name}</h3>`;
-            const btn = document.createElement("button");
-            btn.textContent = "View Guide";
-            btn.className = "px-3 py-2 bg-sky-600 text-white rounded";
-            btn.onclick = () => showGuideModal(task, name);
-            card.appendChild(btn);
-            sectionsContainer.appendChild(card);
+const li = document.createElement("li");
+li.innerHTML = `
+  <button class="w-full flex items-center px-6 py-4 rounded-xl bg-white border border-sky-100 shadow hover:bg-sky-50 transition text-left">
+    <span class="text-sky-500 text-xl mr-3">&#10003;</span>
+    <span class="font-semibold text-slate-800 text-lg">${name}</span>
+  </button>
+`;
+li.querySelector("button").onclick = () => showGuideModal(task, name);
+
+// Wrap in a temporary "Search Results" section
+if (!sectionsContainer.querySelector(".search-results")) {
+  const sectionCard = document.createElement("div");
+  sectionCard.className = "bg-white rounded-2xl shadow-lg border border-sky-100 px-8 py-7 flex flex-col w-[340px] mb-8 search-results";
+  sectionCard.innerHTML = `
+    <div class="flex items-center mb-6">
+      <span class="text-sky-500 text-2xl font-bold mr-2">+</span>
+      <span class="text-2xl font-extrabold text-slate-800">Search Results</span>
+    </div>
+    <div class="flex-1"><ul class="space-y-4"></ul></div>
+  `;
+  sectionsContainer.appendChild(sectionCard);
+}
+sectionsContainer.querySelector(".search-results ul").appendChild(li);
           }
         });
       });
