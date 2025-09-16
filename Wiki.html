@@ -184,40 +184,31 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-// sections
-sectionsContainer.innerHTML = "";
-Object.entries(portal.sections).forEach(([sectionName, tasks]) => {
-  // Section wrapper
-  const sectionDiv = document.createElement("div");
-  sectionDiv.className = "mb-8";
+    sectionsContainer.innerHTML = '';
+    Object.keys(portalData.sections).forEach(section => {
+      // Section header
+      const sectionHeader = document.createElement('div');
+      sectionHeader.className = 'mb-4 flex items-center';
+      sectionHeader.innerHTML = `<h3 class="text-2xl font-extrabold text-slate-800 mr-4">${section}</h3><div class="flex-1 border-t border-slate-300"></div>`;
+      sectionsContainer.appendChild(sectionHeader);
 
-  // Section header
-  const header = document.createElement("h3");
-  header.className = "text-xl font-bold text-slate-800 mb-4 border-b pb-2";
-  header.textContent = sectionName;
-  sectionDiv.appendChild(header);
+      // Guide cards row
+      const guideRow = document.createElement('div');
+      guideRow.className = 'flex flex-wrap gap-6 mb-10';
 
-  // Section grid
-  const grid = document.createElement("div");
-  grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6";
+      Object.keys(portalData.sections[section]).forEach(task => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl shadow-lg border border-sky-100 p-6 flex flex-col items-center justify-between min-w-[220px] max-w-[260px]';
+        card.innerHTML = `
+          <div class="font-bold text-lg text-slate-900 mb-4 text-center">${task}</div>
+          <button class="px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md w-full" style="margin-top:auto;">View Guide</button>
+        `;
+        card.querySelector('button').onclick = () => showGuideModal(portalData.sections[section][task], task);
+        guideRow.appendChild(card);
+      });
 
-  Object.entries(tasks).forEach(([taskName, task]) => {
-    const card = document.createElement("div");
-    card.className = "bg-white p-6 rounded-xl shadow";
-    card.innerHTML = `<h4 class="font-semibold text-lg mb-2">${taskName}</h4>`;
-
-    const btn = document.createElement("button");
-    btn.textContent = "View Guide";
-    btn.className = "px-3 py-2 bg-sky-600 text-white rounded";
-    btn.onclick = () => showGuideModal(task, taskName);
-
-    card.appendChild(btn);
-    grid.appendChild(card);
-  });
-
-  sectionDiv.appendChild(grid);
-  sectionsContainer.appendChild(sectionDiv);
-});
+      sectionsContainer.appendChild(guideRow);
+    });
 
     // button state
     document.querySelectorAll("#main-nav button").forEach(b => b.classList.remove("active-portal"));
