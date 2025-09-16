@@ -274,55 +274,51 @@ document.addEventListener('DOMContentLoaded', () => {
         <video controls preload="metadata" class="w-full rounded-lg shadow-lg">
           <source src="${videoSrc}" type="video/mp4">
           Your browser does not support the video tag.
-        </video>
-      `).join("");
-    } else {
-      portalVideo.classList.add("hidden");
-      portalVideo.innerHTML = "";
-    }
-
-    sectionsContainer.innerHTML = '';
-    Object.keys(portalData.sections).forEach(section => {
-      const sectionCard = document.createElement('div');
-      sectionCard.className = 'bg-gradient-to-br from-sky-50 to-white p-7 rounded-2xl shadow-lg border border-sky-100 hover:shadow-2xl transition-all duration-300 flex flex-col gap-4';
-      sectionCard.innerHTML = `<h3 class="text-2xl font-extrabold mb-3 text-sky-800 flex items-center gap-2"><svg class='w-6 h-6 text-sky-400' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M12 4v16m8-8H4'/></svg>${section}</h3>`;
-
-      const taskList = document.createElement('div');
-      taskList.className = 'space-y-3';
-
-      Object.keys(portalData.sections[section]).forEach(task => {
-        const taskBtn = document.createElement('button');
-        taskBtn.textContent = task;
-        taskBtn.className = 'w-full text-left p-4 rounded-xl bg-white border border-sky-100 hover:bg-sky-100 hover:shadow-md transition-all duration-200 text-sky-700 font-semibold text-lg flex items-center gap-2';
-        taskBtn.innerHTML = `<svg class='w-5 h-5 text-sky-400 flex-shrink-0' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M9 12l2 2 4-4'/></svg> <span>${task}</span>`;
-        taskBtn.onclick = () => showGuideModal(portalData.sections[section][task], task);
-        taskList.appendChild(taskBtn);
-      });
-
-      sectionCard.appendChild(taskList);
-      sectionsContainer.appendChild(sectionCard);
-    });
-
-    // 🔵 Highlight active button
-    if (activeButton) activeButton.classList.remove('active-portal');
-    if (button) {
-      button.classList.add('active-portal');
-      activeButton = button;
-      currentPortal = portalName;
-    }
-  };
-
-const showGuideModal = (taskData, taskName) => {
-  modalTitle.textContent = taskName;
-
-modalDownloadLink.href = taskData.file;
-modalDownloadLink.setAttribute("download", "");
-modalDownloadLink.removeAttribute("target");
-
-
-  const ext = taskData.file.split('.').pop().toLowerCase();
-  const baseName = taskData.file.substring(0, taskData.file.lastIndexOf('.'));
-  let previewFile = taskData.file;
+        const portals = {
+          "HR Portal": {
+            description: "Guides for HR administrators and managers on payroll, employee management, and system configuration.",
+            videos: ["public/videos/hr-fixed.mp4"],
+            sections: {
+              "Administration": {
+                "Approver Assignment": { type: "pdf", file: "guides/APPROVER ASSIGNMENT ON EMPLOYEES.pdf" },
+                "Onboarding": { type: "pdf", file: "guides/Onboarding.pdf" },
+                "Set Employee Inactive": { type: "pdf", file: "guides/How to Set an Employee as Inactive in HRIS.pdf" }
+              },
+              "Employee Management": {
+                "Adding Profiles in Employee 201": { type: "pdf", file: "guides/ADDING PROFILES IN EMPLOYEE 201.pdf" },
+                "Adding Employee Profile to HRIS": { type: "pdf", file: "guides/EMPLOYEE 201_ADDING EMPLOYEE PROFILE TO HRIS.pdf" },
+                "Setup of New Employee": { type: "pdf", file: "guides/New Employee.pdf" },
+                "Employee Assignment Guide": { type: "pdf", file: "guides/Employee Assignment Guide.pdf" },
+                "Offboarding": { type: "pdf", file: "guides/Offboarding.pdf" }
+              },
+              "Reports": {
+                "Generating Employee Work Anniversary Report": { type: "pdf", file: "guides/GENERATING EMPLOYEE WORK ANNIVERSARY REPORT.pdf" }
+              },
+              "HR Policy & Services": {
+                "HR Policy Guide": { type: "pdf", file: "guides/HR Policy Guide.pdf" }
+              }
+            }
+          },
+          "Employee Portal": {
+            description: "Guides for employees on using the portal to manage their profile, file requests, and view information.",
+            videos: ["public/videos/employee-fixed.mp4"],
+            sections: {
+              "General Guides": {
+                "Guide in Filing": { type: "docx", file: "guides/Setup of new employee in Employee 201 Module.docx" },
+                "Update Employee Profile Guide": { type: "pdf", file: "guides/Employee Profile:EP.pdf" }
+              }
+            }
+          },
+          "Applicant Portal": {
+            description: "Guides for applicants to register, upload documents, and complete profiles.",
+            sections: {
+              "Registration": {
+                "Applicant Portal Registration": { type: "pdf", overview: "Steps for applicants to register and complete their profile.", file: "guides/APPLICANT PORTAL_Registration and Profile Completion.pdf" },
+                "Document Upload": { type: "docx", overview: "How to upload required documents in the Applicant Portal.", file: "guides/Document upload in Applicant Portal Guide.docx" }
+              }
+            }
+          }
+        };
 
   if (['docx','doc','xlsx','xls','rtf'].includes(ext)) {
     previewFile = baseName + '.pdf';
@@ -390,7 +386,7 @@ modalDownloadLink.removeAttribute("target");
             const task = portals[portalName].sections[sectionName][taskName];
             const resultCard = document.createElement("div");
             resultCard.className = "bg-white p-6 rounded-xl shadow-md border hover:shadow-lg transition-all duration-200";
-            resultCard.innerHTML = `<h3 class="text-xl font-bold text-sky-700 mb-2">${taskName}</h3>;
+resultCard.innerHTML = `<h3 class="text-xl font-bold text-sky-700 mb-2">${taskName}</h3>`;
             const viewBtn = document.createElement("button");
             viewBtn.textContent = "View Guide";
             viewBtn.className = "px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition";
