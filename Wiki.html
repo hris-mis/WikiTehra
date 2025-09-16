@@ -184,21 +184,40 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // sections
-    sectionsContainer.innerHTML = "";
-    Object.entries(portal.sections).forEach(([sectionName, tasks]) => {
-      Object.entries(tasks).forEach(([taskName, task]) => {
-        const card = document.createElement("div");
-        card.className = "bg-white p-6 rounded-xl shadow";
-        card.innerHTML = `<h3 class="font-bold text-lg mb-2">${taskName}</h3>`;
-        const btn = document.createElement("button");
-        btn.textContent = "View Guide";
-        btn.className = "px-3 py-2 bg-sky-600 text-white rounded";
-        btn.onclick = () => showGuideModal(task, taskName);
-        card.appendChild(btn);
-        sectionsContainer.appendChild(card);
-      });
-    });
+// sections
+sectionsContainer.innerHTML = "";
+Object.entries(portal.sections).forEach(([sectionName, tasks]) => {
+  // Section wrapper
+  const sectionDiv = document.createElement("div");
+  sectionDiv.className = "mb-8";
+
+  // Section header
+  const header = document.createElement("h3");
+  header.className = "text-xl font-bold text-slate-800 mb-4 border-b pb-2";
+  header.textContent = sectionName;
+  sectionDiv.appendChild(header);
+
+  // Section grid
+  const grid = document.createElement("div");
+  grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6";
+
+  Object.entries(tasks).forEach(([taskName, task]) => {
+    const card = document.createElement("div");
+    card.className = "bg-white p-6 rounded-xl shadow";
+    card.innerHTML = `<h4 class="font-semibold text-lg mb-2">${taskName}</h4>`;
+
+    const btn = document.createElement("button");
+    btn.textContent = "View Guide";
+    btn.className = "px-3 py-2 bg-sky-600 text-white rounded";
+    btn.onclick = () => showGuideModal(task, taskName);
+
+    card.appendChild(btn);
+    grid.appendChild(card);
+  });
+
+  sectionDiv.appendChild(grid);
+  sectionsContainer.appendChild(sectionDiv);
+});
 
     // button state
     document.querySelectorAll("#main-nav button").forEach(b => b.classList.remove("active-portal"));
