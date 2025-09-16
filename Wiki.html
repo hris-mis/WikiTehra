@@ -184,38 +184,46 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // Grid for sections
     sectionsContainer.innerHTML = '';
-    Object.keys(portal.sections).forEach(section => {
+    const sectionGrid = document.createElement('div');
+    sectionGrid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8';
+
+    Object.entries(portal.sections).forEach(([section, guides]) => {
+      // Section card
+      const sectionCard = document.createElement('div');
+      sectionCard.className = 'bg-white rounded-2xl shadow-lg border border-sky-100 p-6 flex flex-col min-h-[320px]';
+
       // Section header
-      const sectionHeader = document.createElement('div');
-      sectionHeader.className = 'mb-4 flex items-center';
-      sectionHeader.innerHTML = `<h3 class="text-2xl font-extrabold text-slate-800 mr-4">${section}</h3><div class="flex-1 border-t border-slate-300"></div>`;
-      sectionsContainer.appendChild(sectionHeader);
-
-      // Guide cards row
-      const guideRow = document.createElement('div');
-      guideRow.className = 'flex flex-wrap gap-6 mb-10';
-
-      Object.keys(portal.sections[section]).forEach(task => {
-        const card = document.createElement('div');
-        card.className = 'bg-white rounded-2xl shadow-lg border border-sky-100 p-6 flex flex-col items-center justify-between min-w-[220px] max-w-[260px]';
-        card.innerHTML = `
-          <div class="font-bold text-lg text-slate-900 mb-4 text-center">${task}</div>
-          <button class="px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md w-full" style="margin-top:auto;">View Guide</button>
-        `;
-        card.querySelector('button').onclick = () => showGuideModal(portal.sections[section][task], task);
-        guideRow.appendChild(card);
-      });
-
-      sectionsContainer.appendChild(guideRow);
+      sectionCard.innerHTML = `
+        <div class="flex items-center mb-4">
+          <span class="text-sky-500 text-2xl font-bold mr-2">+</span>
+          <span class="text-xl font-bold text-slate-800">${section}</span>
+        </div>
+        <div class="flex-1">
+          <ul class="space-y-3">
+            ${Object.entries(guides).map(([task, info]) => `
+              <li>
+                <button class="w-full flex items-center px-4 py-3 rounded-xl bg-white border border-slate-200 shadow hover:bg-sky-50 transition text-left" onclick="window.showGuideModal && window.showGuideModal(${JSON.stringify(info).replace(/"/g,'&quot;')}, '${task.replace(/'/g,"&#39;")}')">
+                  <span class="text-sky-500 mr-2">&#10003;</span>
+                  <span class="font-medium text-slate-800">${task}</span>
+                </button>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+      sectionGrid.appendChild(sectionCard);
     });
+    sectionsContainer.appendChild(sectionGrid);
 
     // button state
     document.querySelectorAll("#main-nav button").forEach(b => b.classList.remove("active-portal"));
     if (button) button.classList.add("active-portal");
   }
 
-  function showGuideModal(task, taskName) {
+  // Expose showGuideModal globally for inline onclick
+  window.showGuideModal = function(task, taskName) {
     modalTitle.textContent = taskName;
     modalDownloadLink.href = task.file;
     let ext = task.file.split(".").pop().toLowerCase();
