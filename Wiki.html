@@ -144,34 +144,26 @@
       <div class="p-8 overflow-y-auto flex-grow bg-white">
         
         <!-- ✅ Guide Details at the TOP -->
-        <div id="guide-details" class="space-y-6 mb-8">
-          <div class="p-5 bg-sky-50 rounded-xl shadow-sm">
-            <h4 class="font-bold text-sky-800 text-lg mb-1">Overview</h4>
-            <p id="modal-overview" class="text-sky-700 text-base"></p>
-          </div>
-          <div>
-            <h4 class="font-bold text-slate-900 mb-2 text-lg">Key Information</h4>
-            <p id="modal-key-info" class="text-slate-700 text-base"></p>
-          </div>
-          <div class="flex gap-3">
-<a id="modal-download-link" href="#" download
-   class="inline-flex items-center px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-              </svg>
-              Download Original File
-            </a>
-            <a id="modal-maximize-link" href="#" target="_blank"
-               class="inline-flex items-center px-5 py-3 bg-slate-600 text-white rounded-xl hover:bg-slate-700 transition font-semibold shadow-md">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                      d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/>
-              </svg>
-              Maximize
-            </a>
-          </div>
-        </div>
+<div id="guide-details" class="mb-8">
+  <div class="flex gap-3">
+    <a id="modal-download-link" href="#" download
+       class="inline-flex items-center px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+      </svg>
+      Download Original File
+    </a>
+    <a id="modal-maximize-link" href="#" target="_blank"
+       class="inline-flex items-center px-5 py-3 bg-slate-600 text-white rounded-xl hover:bg-slate-700 transition font-semibold shadow-md">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/>
+      </svg>
+      Maximize
+    </a>
+  </div>
+</div>
 
         <!-- ✅ Media Viewer at the BOTTOM -->
         <div id="media-viewer-container" class="rounded-xl overflow-hidden shadow"></div>
@@ -288,8 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const showGuideModal = (taskData, taskName) => {
   modalTitle.textContent = taskName;
-  modalOverview.textContent = taskData.overview || '';
-  modalKeyInfo.textContent = `This section provides a brief summary of the content and key takeaways from the "${taskName}" guide.`;
 
 modalDownloadLink.href = taskData.file;
 modalDownloadLink.setAttribute("download", "");
