@@ -180,16 +180,51 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const portals = {
-    "HR Portal": {
-      description: "Guides for HR administrators and managers on payroll, employee management, and system configuration.",
-      videos: ["public/videos/hr-fixed.mp4"], // ✅ updated for fixed video
-      sections: {
-        "Administration": {
-          "Approver Assignment": { type: "pdf", overview: "A guide on assigning approvers to employees.", file: "guides/APPROVER ASSIGNMENT ON EMPLOYEES.pdf" },
-          "Onboarding": { type: "pdf", overview: "A guide on the employee onboarding process.", file: "guides/Onboarding.pdf" },
-          "Set Employee Inactive": { type: "pdf", overview: "Instructions on how to set an employee as inactive in HRIS.", file: "guides/How to Set an Employee as Inactive in HRIS.pdf" }
-        }
-      }
+"HR Portal": {
+  description: "Guides for HR administrators and managers on payroll, employee management, and system configuration.",
+  videos: ["public/videos/hr-fixed.mp4"],
+  sections: {
+    "Administration": {
+      "Approver Assignment": { type: "pdf", file: "guides/APPROVER ASSIGNMENT ON EMPLOYEES.pdf" },
+      "Onboarding": { type: "pdf", file: "guides/Onboarding.pdf" },
+      "Set Employee Inactive": { type: "pdf", file: "guides/How to Set an Employee as Inactive in HRIS.pdf" }
+    },
+    "Employee Management": {
+      "Adding Profiles in Employee 201": { type: "pdf", file: "guides/ADDING PROFILES IN EMPLOYEE 201" },
+      "Adding Employee Profile to HRIS": { type: "pdf", file: "guides/EMPLOYEE 201_ADDING EMPLOYEE PROFILE TO HRIS" },
+      "Setup of New Employee": { type: "pdf", file: "guides/New Employee.pdf" },
+      "Employee Assignment Guide": { type: "pdf", file: "guides/Employee Assignment Guide.pdf" },
+      "Offboarding": { type: "pdf", file: "guides/Offboarding.pdf" }
+    },
+    "Payroll": {
+      "Paygroup and Paysheet": { type: "pdf", file: "guides/Paygroup and Paysheet.pdf" },
+      "Paysheet Generation": { type: "pdf", file: "guides/Paysheet Generation.pdf" }
+    },
+    "Reports": {
+      "Generating Employee Work Anniversary Report": { type: "pdf", file: "guides/Generating Employee Work Anniversary Report.pdf" }
+    },
+    "HR Policy & Services": {
+      "HR Policy Guide": { type: "pdf", file: "guides/HR Policy Guide.pdf" },
+      "HR Portal Personnel Development": { type: "pdf", file: "guides/HR Portal Personnel Development.pdf" },
+      "HR Services Module": { type: "pdf", file: "guides/HR Services Module.pdf" },
+      "Employee Relations Guide": { type: "pdf", file: "guides/Employee Relations Guide.pdf" },
+      "Safety & Health Guide": { type: "pdf", file: "guides/Safety & Health Guide.pdf" },
+      "Talent Acquisition": { type: "pdf", file: "guides/Talent Acquisition.pdf" }
+    },
+    "Recruitment": {
+      "Edit Job Description and Qualifications": { type: "pdf", file: "guides/Edit Job Description and Qualifications.pdf" },
+      "No Hiring Process for Job Position": { type: "pdf", file: "guides/No Hiring Process for Job Position.pdf" }
+    },
+    "Time & Attendance": {
+      "Process of Attendance Adjustment": { type: "pdf", file: "guides/Process of Attendance Adjustment.pdf" },
+      "Schedule IAR Generation": { type: "pdf", file: "guides/Schedule IAR Generation.pdf" },
+      "Schedule, Leave, and Attendance Module Process": { type: "pdf", file: "guides/Schedule, Leave, and Attendance Module Process.pdf" }
+    },
+    "Personnel Development": {
+      "Training Calendar": { type: "pdf", file: "guides/Training Calendar.pdf" },
+      "Updated 2025 Guide": { type: "pdf", file: "guides/Updated 2025 Guide.pdf" }
+    }
+  }
     },
     "Employee Portal": {
       description: "Guides for employees on using the portal to manage their profile, file requests, and view information.",
@@ -197,8 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sections: {
         "General Guides": {
           "Guide in Filing": { type: "docx", overview: "A guide on how to file requests and forms via the Employee Portal.", file: "guides/Employee Portal - Guide in Filing.docx" }
-        }
-      }
+      "Update Employee Profile Guide": { type: "pdf", file: "guides/Employee Profile:EP.pdf" },        }
     },
     "Applicant Portal": {
       description: "Guides for applicants to register, upload documents, and complete profiles.",
