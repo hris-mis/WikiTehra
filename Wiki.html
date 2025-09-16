@@ -192,21 +192,21 @@ document.addEventListener('DOMContentLoaded', () => {
     Object.entries(portal.sections).forEach(([section, guides]) => {
       // Section card
       const sectionCard = document.createElement('div');
-      sectionCard.className = 'bg-white rounded-2xl shadow-lg border border-sky-100 p-6 flex flex-col min-h-[320px]';
+      sectionCard.className = 'bg-white rounded-2xl shadow-lg border border-sky-100 px-8 py-7 flex flex-col min-h-[320px] max-w-[370px] w-full mx-auto';
 
       // Section header
       sectionCard.innerHTML = `
-        <div class="flex items-center mb-4">
+        <div class="flex items-center mb-6">
           <span class="text-sky-500 text-2xl font-bold mr-2">+</span>
-          <span class="text-xl font-bold text-slate-800">${section}</span>
+          <span class="text-2xl font-extrabold text-slate-800">${section}</span>
         </div>
         <div class="flex-1">
-          <ul class="space-y-3">
+          <ul class="space-y-4">
             ${Object.entries(guides).map(([task, info]) => `
               <li>
-                <button class="w-full flex items-center px-4 py-3 rounded-xl bg-white border border-slate-200 shadow hover:bg-sky-50 transition text-left" onclick="window.showGuideModal && window.showGuideModal(${JSON.stringify(info).replace(/"/g,'&quot;')}, '${task.replace(/'/g,"&#39;")}')">
-                  <span class="text-sky-500 mr-2">&#10003;</span>
-                  <span class="font-medium text-slate-800">${task}</span>
+                <button class="w-full flex items-center px-6 py-4 rounded-xl bg-white border border-sky-100 shadow hover:bg-sky-50 transition text-left" style="word-break:break-word;" onclick="window.showGuideModal && window.showGuideModal(${JSON.stringify(info).replace(/"/g,'&quot;')}, '${task.replace(/'/g,"&#39;")}')">
+                  <span class="text-sky-500 text-xl mr-3">&#10003;</span>
+                  <span class="font-semibold text-slate-800 text-lg">${task}</span>
                 </button>
               </li>
             `).join('')}
