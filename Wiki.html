@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     sectionsContainer.innerHTML = '';
-    Object.keys(portalData.sections).forEach(section => {
+    Object.keys(portal.sections).forEach(section => {
       // Section header
       const sectionHeader = document.createElement('div');
       sectionHeader.className = 'mb-4 flex items-center';
@@ -196,14 +196,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const guideRow = document.createElement('div');
       guideRow.className = 'flex flex-wrap gap-6 mb-10';
 
-      Object.keys(portalData.sections[section]).forEach(task => {
+      Object.keys(portal.sections[section]).forEach(task => {
         const card = document.createElement('div');
         card.className = 'bg-white rounded-2xl shadow-lg border border-sky-100 p-6 flex flex-col items-center justify-between min-w-[220px] max-w-[260px]';
         card.innerHTML = `
           <div class="font-bold text-lg text-slate-900 mb-4 text-center">${task}</div>
           <button class="px-5 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition font-semibold shadow-md w-full" style="margin-top:auto;">View Guide</button>
         `;
-        card.querySelector('button').onclick = () => showGuideModal(portalData.sections[section][task], task);
+        card.querySelector('button').onclick = () => showGuideModal(portal.sections[section][task], task);
         guideRow.appendChild(card);
       });
 
