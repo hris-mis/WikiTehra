@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "Set Employee Inactive": { type: "pdf", file: "guides/How to Set an Employee as Inactive in HRIS.pdf" }
     },
     "Employee Management": {
-      "Adding Profiles in Employee 201": { type: "pdf", file: "guides/ADDING PROFILES IN EMPLOYEE 201" },
+      "Adding Profiles in Employee 201": { type: "pdf", file: "guides/ADDING PROFILES IN EMPLOYEE 201.pdf" },
       "Adding Employee Profile to HRIS": { type: "pdf", file: "guides/EMPLOYEE 201_ADDING EMPLOYEE PROFILE TO HRIS" },
       "Setup of New Employee": { type: "pdf", file: "guides/New Employee.pdf" },
       "Employee Assignment Guide": { type: "pdf", file: "guides/Employee Assignment Guide.pdf" },
@@ -234,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
       "Guide in Filing": { type: "docx", file: "guides/Employee Portal - Guide in Filing.docx" },
       "Update Employee Profile Guide": { type: "pdf", file: "guides/Employee Profile:EP.pdf" }
     }
-  }
 },
     },
     "Applicant Portal": {
@@ -391,7 +390,7 @@ modalDownloadLink.removeAttribute("target");
             const task = portals[portalName].sections[sectionName][taskName];
             const resultCard = document.createElement("div");
             resultCard.className = "bg-white p-6 rounded-xl shadow-md border hover:shadow-lg transition-all duration-200";
-            resultCard.innerHTML = `<h3 class="text-xl font-bold text-sky-700 mb-2">${taskName}</h3>
+            resultCard.innerHTML = `<h3 class="text-xl font-bold text-sky-700 mb-2">${taskName}</h3>;
             const viewBtn = document.createElement("button");
             viewBtn.textContent = "View Guide";
             viewBtn.className = "px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition";
