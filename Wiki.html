@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <script src="https://unpkg.com/lucide@latest"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { 
@@ -224,17 +223,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalMaximizeLink = document.getElementById('modal-maximize-link');
   const closeModalBtn = document.getElementById('close-modal-btn');
   const searchInput = document.getElementById('searchInput');
+  const backToTop = document.getElementById('back-to-top');
 
-  let currentPortal = "HR Portal";
+   let currentPortal = "HR Portal";
 
-        `
-          )
-          .join("")}
-      </div>
-    </div>
-  `;
-}
-    // video
+  // ✅ RENDER PORTAL FUNCTION
+  function renderPortal(portalName, button) {
+    const portal = portals[portalName];
+    portalTitle.textContent = portalName;
+    portalDescription.textContent = portal.description || "";
+
+    // Video
     portalVideo.innerHTML = "";
     if (portal.videos) {
       portal.videos.forEach(v => {
@@ -242,117 +241,122 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-// Grid for sections
-sectionsContainer.innerHTML = '';
+    // Clear sections
+    sectionsContainer.innerHTML = "";
 
-Object.entries(portal.sections).forEach(([section, guides]) => {
-  // Section card
-  const sectionCard = document.createElement('div');
-  sectionCard.className = 'portal-card p-6 rounded-lg shadow bg-white flex flex-col gap-3';
-  // Section header
-  const header = document.createElement('div');
-  header.className = 'flex items-center mb-4';
-  // pick emoji by section name
-let emoji = "📘";
-if (section.includes("Administration")) emoji = "⚙️";
-if (section.includes("Employee")) emoji = "👤";
-if (section.includes("Payroll")) emoji = "💰";
-if (section.includes("Reports")) emoji = "📊";
-if (section.includes("HR Policy")) emoji = "📑";
-if (section.includes("Recruitment")) emoji = "🎯";
-if (section.includes("Time")) emoji = "⏰";
-if (section.includes("Personnel")) emoji = "📂";
+    // Build section cards
+    Object.entries(portal.sections).forEach(([section, guides]) => {
+      const sectionCard = document.createElement("div");
+      sectionCard.className = "portal-card p-6 rounded-lg shadow bg-white flex flex-col gap-3";
 
-header.innerHTML = `
-  <span class="text-xl mr-2">${emoji}</span>
-  <span class="text-lg font-semibold text-slate-800">${section}</span>
-`;
-  sectionCard.appendChild(header);
+      // Section header with emoji
+      const header = document.createElement("div");
+      header.className = "flex items-center mb-4";
+      let emoji = "📘";
+      if (section.includes("Administration")) emoji = "⚙️";
+      if (section.includes("Employee")) emoji = "👤";
+      if (section.includes("Payroll")) emoji = "💰";
+      if (section.includes("Reports")) emoji = "📊";
+      if (section.includes("HR Policy")) emoji = "📑";
+      if (section.includes("Recruitment")) emoji = "🎯";
+      if (section.includes("Time")) emoji = "⏰";
+      if (section.includes("Personnel")) emoji = "📂";
 
-  // Guides list
-  const ul = document.createElement('ul');
-  ul.className = 'space-y-3';
+      header.innerHTML = `
+        <span class="text-xl mr-2">${emoji}</span>
+        <span class="text-lg font-semibold text-slate-800">${section}</span>
+      `;
+      sectionCard.appendChild(header);
 
-  Object.entries(guides).forEach(([task, info]) => {
-    const li = document.createElement('li');
-    const btn = document.createElement('button');
-    btn.className = 'w-full flex items-center px-4 py-2 rounded-lg bg-white border border-sky-200 hover:bg-sky-50 transition text-left text-sm';
-    btn.innerHTML = `
-      <span class="text-sky-500 text-base mr-2">&#10003;</span>
-      <span class="font-medium text-slate-800">${task}</span>
-    `;
-    btn.onclick = () => showGuideModal(info, task);
-    li.appendChild(btn);
-    ul.appendChild(li);
-  });
+      // Guides list
+      const ul = document.createElement("ul");
+      ul.className = "space-y-3";
 
-  sectionCard.appendChild(ul);
-  sectionsContainer.appendChild(sectionCard);
-  // 🔹 Animate cards in sequence
-setTimeout(() => {
-  document.querySelectorAll('.portal-card').forEach((c, i) => {
-    setTimeout(() => c.classList.add('show'), i * 100);
-  });
-}, 50);
+      Object.entries(guides).forEach(([task, info]) => {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.className = "w-full flex items-center px-4 py-2 rounded-lg bg-white border border-sky-200 hover:bg-sky-50 transition text-left text-sm";
+        btn.innerHTML = `
+          <span class="text-sky-500 text-base mr-2">&#10003;</span>
+          <span class="font-medium text-slate-800">${task}</span>
+        `;
+        btn.onclick = () => showGuideModal(info, task);
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
 
-});
-    // button state
+      sectionCard.appendChild(ul);
+      sectionsContainer.appendChild(sectionCard);
+    });
+
+    // Animate cards
+    setTimeout(() => {
+      document.querySelectorAll(".portal-card").forEach((c, i) => {
+        setTimeout(() => c.classList.add("show"), i * 100);
+      });
+    }, 50);
+
+    // Button active state
     document.querySelectorAll("#main-nav button").forEach(b => b.classList.remove("active-portal"));
     if (button) button.classList.add("active-portal");
   }
 
-  // Expose showGuideModal globally for inline onclick
-window.showGuideModal = function(info, taskName) {
-  modalTitle.textContent = taskName;
-  modalDownloadLink.href = info.file;
-  let ext = info.file.split(".").pop().toLowerCase();
-  let previewFile = info.file;
+  // ✅ MODAL HANDLING
+  window.showGuideModal = function(info, taskName) {
+    modalTitle.textContent = taskName;
+    modalDownloadLink.href = info.file;
+    let ext = info.file.split(".").pop().toLowerCase();
+    let previewFile = info.file;
 
-  if (["docx","doc","xlsx","xls","rtf"].includes(ext)) {
-    previewFile = info.file.replace(/\.[^.]+$/, ".pdf");
-  }
+    if (["docx","doc","xlsx","xls","rtf"].includes(ext)) {
+      previewFile = info.file.replace(/\.[^.]+$/, ".pdf");
+    }
 
-  modalMaximizeLink.href = previewFile;
-  mediaContainer.innerHTML = "";
+    modalMaximizeLink.href = previewFile;
+    mediaContainer.innerHTML = "";
 
-  if (previewFile.endsWith(".pdf")) {
-    mediaContainer.innerHTML = `<iframe src="${previewFile}" class="w-full h-[600px]"></iframe>`;
-  } else if (["mp4","mov"].includes(ext)) {
-    mediaContainer.innerHTML = `<video controls class="w-full h-[400px]"><source src="${info.file}" type="video/mp4"></video>`;
-  } else if (["png","jpg","jpeg","gif"].includes(ext)) {
-    mediaContainer.innerHTML = `<img src="${info.file}" class="w-full rounded-lg">`;
-  } else {
-    mediaContainer.innerHTML = `<p class="text-slate-600">Preview not available</p>`;
-  }
+    if (previewFile.endsWith(".pdf")) {
+      mediaContainer.innerHTML = `<iframe src="${previewFile}" class="w-full h-[600px]"></iframe>`;
+    } else if (["mp4","mov"].includes(ext)) {
+      mediaContainer.innerHTML = `<video controls class="w-full h-[400px]"><source src="${info.file}" type="video/mp4"></video>`;
+    } else if (["png","jpg","jpeg","gif"].includes(ext)) {
+      mediaContainer.innerHTML = `<img src="${info.file}" class="w-full rounded-lg">`;
+    } else {
+      mediaContainer.innerHTML = `<p class="text-slate-600">Preview not available</p>`;
+    }
 
-  modal.classList.remove("hidden");
-  setTimeout(() => modal.classList.add("show"), 10);
-}
-closeModalBtn.onclick = () => {
-  modal.classList.remove("show");
-  setTimeout(() => modal.classList.add("hidden"), 300);
-};
-  // build nav
-Object.keys(portals).forEach(p => {
-  const btn = document.createElement("button");
-  btn.textContent = p;
-  btn.className = "px-4 py-2 rounded";
-  btn.onclick = () => { 
-    currentPortal = p; 
-    renderPortal(p, btn); 
+    modal.classList.remove("hidden");
+    setTimeout(() => modal.classList.add("show"), 10);
   };
-  portalNav.appendChild(btn);
 
-  // highlight the first portal (default)
-  if (p === currentPortal) btn.classList.add("active-portal");
-});
+  closeModalBtn.onclick = () => {
+    modal.classList.remove("show");
+    setTimeout(() => modal.classList.add("hidden"), 300);
+  };
+
+  // ✅ NAV BUILD
+  Object.keys(portals).forEach(p => {
+    const btn = document.createElement("button");
+    btn.textContent = p;
+    btn.className = "px-4 py-2 rounded";
+    btn.onclick = () => { 
+      currentPortal = p; 
+      renderPortal(p, btn); 
+    };
+    portalNav.appendChild(btn);
+    if (p === currentPortal) btn.classList.add("active-portal");
+  });
+
+  // Initial render
   renderPortal(currentPortal, portalNav.querySelector("button"));
-  // search
+
+  // ✅ SEARCH
   searchInput.addEventListener("input", function() {
     const q = this.value.toLowerCase();
     sectionsContainer.innerHTML = "";
     if (!q) { renderPortal(currentPortal, portalNav.querySelector(".active-portal")); return; }
     let found = false;
+
     Object.values(portals).forEach(portal => {
       Object.entries(portal.sections).forEach(([s, tasks]) => {
         Object.entries(tasks).forEach(([name, task]) => {
@@ -369,7 +373,6 @@ Object.keys(portals).forEach(p => {
             btn.onclick = () => showGuideModal(task, name);
             li.appendChild(btn);
 
-            // Wrap in a temporary "Search Results" section
             if (!sectionsContainer.querySelector(".search-results")) {
               const sectionCard = document.createElement("div");
               sectionCard.className = "bg-white rounded-2xl shadow-lg border border-sky-100 px-8 py-7 flex flex-col w-[340px] mb-8 search-results";
@@ -390,19 +393,19 @@ Object.keys(portals).forEach(p => {
         });
       });
     });
+
     if (!found) sectionsContainer.innerHTML = `<p class="text-center text-slate-500">No results</p>`;
   });
 
-  // ✅ Back to Top button (inside DOMContentLoaded)
-  const backToTop = document.getElementById('back-to-top');
+  // ✅ Back to Top button
   window.addEventListener('scroll', () => {
     if (window.scrollY > 200) backToTop.classList.remove('hidden');
     else backToTop.classList.add('hidden');
   });
   backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-</script>
-<!-- Back to Top Button -->
+</script> 
+  <!-- Back to Top Button -->
 <button id="back-to-top" 
   class="fixed bottom-6 right-6 bg-sky-600 text-white px-4 py-2 rounded-full shadow-lg hidden">
   ↑ Top
