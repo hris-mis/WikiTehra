@@ -34,20 +34,54 @@
       @apply bg-sky-600 text-white shadow-md;
     }
 
-    /* 🔹 PORTAL CARDS */
-    .portal-card {
-      @apply bg-gradient-to-b from-sky-50 to-white rounded-xl border border-sky-100 
-             px-6 py-5 flex flex-col shadow-sm transition transform duration-300;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    .portal-card.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .portal-card:hover {
-      transform: translateY(-8px) scale(1.03);
-    }
+/* 🔹 PORTAL CARDS with gradient border animation */
+.portal-card {
+  @apply rounded-xl px-6 py-5 flex flex-col transition transform duration-300;
+  background: rgba(255, 255, 255, 0.7); /* semi-transparent */
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border: 2px solid transparent;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.portal-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  padding: 2px; /* border thickness */
+  background: linear-gradient(120deg, #38bdf8, #6366f1, #ec4899, #facc15);
+  background-size: 300% 300%;
+  animation: borderShift 8s ease infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  z-index: -1;
+}
+
+@keyframes borderShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.portal-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.portal-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
 
     /* 🔹 SEARCH INPUT */
     #searchInput:focus {
