@@ -8,6 +8,8 @@
   <link rel="icon" type="image/jpeg" href="images/pmc.jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { 
@@ -225,11 +227,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentPortal = "HR Portal";
 
-  function renderPortal(portalName, button) {
-    const portal = portals[portalName];
-    portalTitle.textContent = portalName;
-    portalDescription.textContent = portal.description;
-
+        `
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+}
     // video
     portalVideo.innerHTML = "";
     if (portal.videos) {
@@ -248,10 +252,21 @@ Object.entries(portal.sections).forEach(([section, guides]) => {
   // Section header
   const header = document.createElement('div');
   header.className = 'flex items-center mb-4';
-  header.innerHTML = `
-    <span class="text-sky-500 text-lg font-bold mr-2">+</span>
-    <span class="text-lg font-semibold text-slate-800">${section}</span>
-  `;
+  // pick emoji by section name
+let emoji = "📘";
+if (section.includes("Administration")) emoji = "⚙️";
+if (section.includes("Employee")) emoji = "👤";
+if (section.includes("Payroll")) emoji = "💰";
+if (section.includes("Reports")) emoji = "📊";
+if (section.includes("HR Policy")) emoji = "📑";
+if (section.includes("Recruitment")) emoji = "🎯";
+if (section.includes("Time")) emoji = "⏰";
+if (section.includes("Personnel")) emoji = "📂";
+
+header.innerHTML = `
+  <span class="text-xl mr-2">${emoji}</span>
+  <span class="text-lg font-semibold text-slate-800">${section}</span>
+`;
   sectionCard.appendChild(header);
 
   // Guides list
@@ -318,14 +333,19 @@ closeModalBtn.onclick = () => {
   setTimeout(() => modal.classList.add("hidden"), 300);
 };
   // build nav
-  Object.keys(portals).forEach(p => {
-    const btn = document.createElement("button");
-    btn.textContent = p;
-    btn.className = "px-4 py-2 rounded";
-    btn.onclick = () => { currentPortal = p; renderPortal(p, btn); };
-    portalNav.appendChild(btn);
-  });
+Object.keys(portals).forEach(p => {
+  const btn = document.createElement("button");
+  btn.textContent = p;
+  btn.className = "px-4 py-2 rounded";
+  btn.onclick = () => { 
+    currentPortal = p; 
+    renderPortal(p, btn); 
+  };
+  portalNav.appendChild(btn);
 
+  // highlight the first portal (default)
+  if (p === currentPortal) btn.classList.add("active-portal");
+});
   renderPortal(currentPortal, portalNav.querySelector("button"));
   // search
   searchInput.addEventListener("input", function() {
