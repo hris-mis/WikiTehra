@@ -244,7 +244,7 @@ sectionsContainer.innerHTML = '';
 Object.entries(portal.sections).forEach(([section, guides]) => {
   // Section card
   const sectionCard = document.createElement('div');
-  sectionCard.className = 'portal-card flex flex-col gap-3';
+  sectionCard.className = 'portal-card p-6 rounded-lg shadow bg-white flex flex-col gap-3';
   // Section header
   const header = document.createElement('div');
   header.className = 'flex items-center mb-4';
@@ -327,7 +327,6 @@ closeModalBtn.onclick = () => {
   });
 
   renderPortal(currentPortal, portalNav.querySelector("button"));
-
   // search
   searchInput.addEventListener("input", function() {
     const q = this.value.toLowerCase();
@@ -339,39 +338,54 @@ closeModalBtn.onclick = () => {
         Object.entries(tasks).forEach(([name, task]) => {
           if (name.toLowerCase().includes(q)) {
             found = true;
-const li = document.createElement("li");
-li.innerHTML = `
-  <button class="w-full flex items-center px-6 py-4 rounded-xl bg-white border border-sky-100 shadow hover:bg-sky-50 transition text-left">
-    <span class="text-sky-500 text-xl mr-3">&#10003;</span>
-    <span class="font-semibold text-slate-800 text-lg">${name}</span>
-  </button>
-`;
-li.querySelector("button").onclick = () => showGuideModal(task, name);
+            const li = document.createElement("li");
+            const btn = document.createElement("button");
+            btn.className = 'guide-btn w-full flex items-center px-6 py-4 rounded-xl bg-white border border-sky-100 shadow hover:bg-sky-50 transition text-left';
+            const highlighted = name.replace(new RegExp(`(${q})`, "gi"), "<mark class='bg-yellow-200'>$1</mark>");
+            btn.innerHTML = `
+              <span class="text-sky-500 text-xl mr-3">&#10003;</span>
+              <span class="font-semibold text-slate-800 text-lg">${highlighted}</span>
+            `;
+            btn.onclick = () => showGuideModal(task, name);
+            li.appendChild(btn);
 
-// Wrap in a temporary "Search Results" section
-if (!sectionsContainer.querySelector(".search-results")) {
-  const sectionCard = document.createElement("div");
-  sectionCard.className = "bg-white rounded-2xl shadow-lg border border-sky-100 px-8 py-7 flex flex-col w-[340px] mb-8 search-results";
-  sectionCard.innerHTML = `
-    <div class="flex items-center mb-6">
-      <span class="text-sky-500 text-2xl font-bold mr-2">+</span>
-      <span class="text-2xl font-extrabold text-slate-800">Search Results</span>
-    </div>
-    <div class="flex-1"><ul class="space-y-4"></ul></div>
-  `;
-  sectionsContainer.appendChild(sectionCard);
-}
-sectionsContainer.querySelector(".search-results ul").appendChild(li);
-setTimeout(() => {
-  sectionsContainer.querySelectorAll(".search-results").forEach(el => el.classList.add("show"));
-}, 50);
+            // Wrap in a temporary "Search Results" section
+            if (!sectionsContainer.querySelector(".search-results")) {
+              const sectionCard = document.createElement("div");
+              sectionCard.className = "bg-white rounded-2xl shadow-lg border border-sky-100 px-8 py-7 flex flex-col w-[340px] mb-8 search-results";
+              sectionCard.innerHTML = `
+                <div class="flex items-center mb-6">
+                  <span class="text-sky-500 text-2xl font-bold mr-2">+</span>
+                  <span class="text-2xl font-extrabold text-slate-800">Search Results</span>
+                </div>
+                <div class="flex-1"><ul class="space-y-4"></ul></div>
+              `;
+              sectionsContainer.appendChild(sectionCard);
+            }
+            sectionsContainer.querySelector(".search-results ul").appendChild(li);
+            setTimeout(() => {
+              sectionsContainer.querySelectorAll(".search-results").forEach(el => el.classList.add("show"));
+            }, 50);
           }
         });
       });
     });
     if (!found) sectionsContainer.innerHTML = `<p class="text-center text-slate-500">No results</p>`;
   });
+
+  // ✅ Back to Top button (inside DOMContentLoaded)
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) backToTop.classList.remove('hidden');
+    else backToTop.classList.add('hidden');
+  });
+  backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
+<!-- Back to Top Button -->
+<button id="back-to-top" 
+  class="fixed bottom-6 right-6 bg-sky-600 text-white px-4 py-2 rounded-full shadow-lg hidden">
+  ↑ Top
+</button>
 </body>
 </html>
