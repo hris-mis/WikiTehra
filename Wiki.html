@@ -221,24 +221,35 @@
 
     <!-- MAIN -->
     <main>
-      <section id="portal-details-section">
-        <div class="text-center mb-12">
-          <h2 id="portal-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">How can we help you?</h2>
-          <p id="portal-description" class="max-w-2xl mx-auto text-slate-600"></p>
-        </div>
+<section id="portal-details-section">
+  <!-- Hero Section -->
+  <section class="text-center mb-14">
+    <h2 id="portal-title" class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">
+      How can we help you?
+    </h2>
+    <p id="portal-description" class="max-w-2xl mx-auto text-lg text-slate-600 mb-8">
+      Search our guides or browse by category below.
+    </p>
 
-        <!-- Video -->
-        <div id="portal-video" class="mb-12"></div>
+    <!-- Video (optional, will only render if exists) -->
+    <div id="portal-video" class="mb-8"></div>
 
-        <!-- Search -->
-        <div class="relative mb-12">
-          <input id="searchInput" type="text" placeholder="Search guides..." class="w-full px-6 py-4 rounded-full border border-slate-300 shadow-md">
-          <svg class="absolute right-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-        </div>
+    <!-- Search -->
+    <div class="relative max-w-2xl mx-auto">
+      <input id="searchInput" type="text" placeholder="Search guides..."
+        class="w-full px-6 py-4 rounded-full border border-slate-300 shadow-md focus:ring-2 focus:ring-sky-400">
+      <svg class="absolute right-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      </svg>
+    </div>
+  </section>
 
   <!-- Sections -->
-        <div id="portal-sections-container" class="portal-info grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>        
-        <!-- MODAL -->
+  <div id="portal-sections-container"
+       class="portal-info grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <!-- MODAL -->
         <div id="guide-modal" class="fixed inset-0 z-50 hidden bg-gray-900 bg-opacity-70 flex items-center justify-center">
           <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
             <!-- Header -->
