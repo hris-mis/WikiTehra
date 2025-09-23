@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+  <!-- Firebase SDK -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WikiTEHRA</title>
@@ -8,6 +9,8 @@
   <link rel="icon" type="image/jpeg" href="images/pmc.jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -273,6 +276,18 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  <!-- Third-party library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Your custom script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  Swal.fire("Hi!", "SweetAlert2 is working 🎉", "success");
+
+  // ✅ all your existing code here
+});
+</script>
+
   // ✅ Full portals object with all your guides (nothing removed)
   const portals = {
     "HR Portal": {
