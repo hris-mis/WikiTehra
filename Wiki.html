@@ -91,6 +91,78 @@
   border-radius: 9999px;
   background: linear-gradient(90deg, #6366f1, #ec4899);
 }
+/* ========== Equal-height grid + nicer translucent cards ========== */
+#portal-sections-container {
+  /* ensure grid items stretch to same height in each row */
+  grid-auto-rows: 1fr;
+  align-items: stretch; /* let children stretch */
+}
+
+/* card visual reset (thin gradient border + frosted interior) */
+.portal-card {
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 300px;                 /* same baseline height for each card */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.62); /* translucent white */
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+  backdrop-filter: blur(8px) saturate(1.05);
+  border: 2px solid transparent; /* use border-image for gradient */
+  border-image: linear-gradient(90deg, #60a5fa, #a78bfa) 1;
+  box-shadow: 0 8px 20px rgba(2,6,23,0.06);
+  transition: transform .22s ease, box-shadow .22s ease;
+  align-self: stretch;
+}
+
+/* simple hover uplift */
+.portal-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 42px rgba(2,6,23,0.08);
+}
+
+/* header (icon + title) alignment */
+.portal-card .flex.items-center.mb-4,
+.portal-card > .card-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: .6rem;
+}
+
+/* make title clearer and remove default margins */
+.portal-card .card-header .title,
+.portal-card .flex.items-center.mb-4 > span:nth-child(2) {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* keep the list to grow/shrink and push spacing nicely */
+.portal-card ul {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1; /* so each card's list expands and cards match height */
+}
+
+/* keep each guide button compact and consistent */
+.portal-card ul li button {
+  width: 100%;
+  text-align: left;
+}
+
+/* responsive tweak: reduce min-height on small screens */
+@media (max-width: 768px) {
+  .portal-card { min-height: 220px; }
+}
 
 
     /* 🔹 SEARCH INPUT */
@@ -138,7 +210,9 @@
     <header class="pb-8">
       <div class="flex items-center justify-between bg-white/80 rounded-2xl shadow-lg px-8 py-6 mb-6 border border-slate-200">
         <div class="flex items-center space-x-4">
-          <div class="w-12 h-12 bg-gradient-to-br from-sky-600 to-sky-400 rounded-xl flex items-center justify-center text-white text-2xl font-extrabold">W</div>
+<div class="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-md">
+  <img src="images/pmc.jpeg" alt="W Logo" class="w-full h-full object-cover">
+</div>
           <h1 class="text-3xl font-extrabold text-slate-900">WikiTEHRA</h1>
         </div>
         <nav id="main-nav" class="flex space-x-4"></nav>
@@ -295,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Section header with emoji
       const header = document.createElement("div");
-      header.className = "flex items-center mb-4";
+header.className = "card-header";
       let emoji = "📘";
       if (section.includes("Administration")) emoji = "⚙️";
       if (section.includes("Employee")) emoji = "👤";
@@ -391,8 +465,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (p === currentPortal) btn.classList.add("active-portal");
   });
 
-  // Initial render
-  renderPortal(currentPortal, portalNav.querySelector("button"));
+// Initial render
+const firstBtn = portalNav.querySelector("button");
+renderPortal(currentPortal, firstBtn);
+firstBtn.classList.add("active-portal");
+
 
   // ✅ SEARCH
   searchInput.addEventListener("input", function() {
