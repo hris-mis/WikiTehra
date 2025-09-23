@@ -9,11 +9,27 @@
   <link rel="icon" type="image/jpeg" href="images/pmc.jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
+
+<!-- 🔹 Firebase init -->
+<script>  
+  const firebaseConfig = {
+    apiKey: "AIzaSyDEGYeA0ere_txZPbwxMH5-BRflZqh_ef0",
+    authDomain: "wikitehra.firebaseapp.com",
+    projectId: "wikitehra",
+    storageBucket: "wikitehra.firebasestorage.app",
+    messagingSenderId: "761691537990",
+    appId: "1:761691537990:web:fb6f60c918b2ddca52c047"
+  };
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+</script>
+  <!-- Your existing page content here -->
   <style>
+    
     body { 
       font-family: 'Inter', sans-serif; 
       position: relative;
@@ -207,7 +223,15 @@
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
-
+    <!-- 🔹 Login/Logout buttons -->
+  <div class="flex justify-end gap-2 p-4">
+    <button id="loginBtn" class="bg-sky-600 text-white px-4 py-2 rounded-lg shadow-md">
+      Login
+    </button>
+    <button id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hidden">
+      Logout
+    </button>
+  </div>
   <div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- HEADER -->
     <header class="pb-8">
@@ -274,22 +298,18 @@
     </main>
   </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  <!-- Third-party library -->
+<!-- SweetAlert2 library -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Your custom script -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  Swal.fire("Hi!", "SweetAlert2 is working 🎉", "success");
+// Swal.fire("Hi!", "SweetAlert2 is working 🎉", "success");
 
-  // ✅ all your existing code here
-});
-</script>
-
-  // ✅ Full portals object with all your guides (nothing removed)
+  // ✅ all your existing WikiTEHRA code here...
+  
   const portals = {
+  // ✅ Full portals object with all your guides (nothing removed)
     "HR Portal": {
       description: "Guides for HR and managers on payroll, employee management, and system configuration.",
       videos: ["public/videos/hr-fixed.mp4"],
@@ -544,15 +564,62 @@ firstBtn.classList.add("active-portal");
     if (!found) sectionsContainer.innerHTML = `<p class="text-center text-slate-500">No results</p>`;
   });
 
+   // 🔹 Login/Logout code starts here
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  loginBtn.addEventListener("click", async () => {
+    const { value: formValues } = await Swal.fire({
+      title: "Login",
+      html: `
+        <input id="email" type="email" class="swal2-input" placeholder="Email">
+        <input id="password" type="password" class="swal2-input" placeholder="Password">
+      `,
+      focusConfirm: false,
+      preConfirm: () => {
+        return {
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value
+        };
+      }
+    });
+
+    if (formValues) {
+      try {
+        await auth.signInWithEmailAndPassword(formValues.email, formValues.password);
+        Swal.fire("Welcome!", "You are now logged in 🎉", "success");
+      } catch (error) {
+        Swal.fire("Error", error.message, "error");
+      }
+    }
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+    await auth.signOut();
+    Swal.fire("Goodbye!", "You are now logged out 👋", "info");
+  });
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      loginBtn.classList.add("hidden");
+      logoutBtn.classList.remove("hidden");
+    } else {
+      loginBtn.classList.remove("hidden");
+      logoutBtn.classList.add("hidden");
+    }
+  });
+});
+
   // ✅ Back to Top button
+if (backToTop) {
   window.addEventListener('scroll', () => {
     if (window.scrollY > 200) backToTop.classList.remove('hidden');
     else backToTop.classList.add('hidden');
   });
   backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+}
 </script> 
-  <!-- Back to Top Button -->
+<!-- Back to Top Button -->
 <button id="back-to-top" 
   class="fixed bottom-6 right-6 bg-sky-600 text-white px-4 py-2 rounded-full shadow-lg hidden">
   ↑ Top
