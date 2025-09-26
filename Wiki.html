@@ -11,22 +11,34 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
+  <script type="module">
+  // Import Firebase SDKs from CDN
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-<!-- 🔹 Firebase init -->
-<script>  
+  // ✅ Correct Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDEGYeA0ere_txZPbwxMH5-BRflZqh_ef0",
     authDomain: "wikitehra.firebaseapp.com",
     projectId: "wikitehra",
-    storageBucket: "wikitehra.firebasestorage.app",
+    storageBucket: "wikitehra.appspot.com",  // ✅ fixed
     messagingSenderId: "761691537990",
     appId: "1:761691537990:web:fb6f60c918b2ddca52c047"
   };
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Expose auth globally so your other script (below) can use it
+  window.auth = auth;
+  window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+  window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+  window.signOut = signOut;
+  window.onAuthStateChanged = onAuthStateChanged;
 </script>
+
   <!-- Your existing page content here -->
   <style>
     
@@ -570,7 +582,12 @@ firstBtn.classList.add("active-portal");
 
    // 🔹 Login/Logout code starts here
   const registerBtn = document.getElementById("registerBtn");
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const portalContent = document.getElementById("portal-content");
+  const backToTop = document.getElementById("back-to-top");
 
+  // ✅ Register
   registerBtn.addEventListener("click", async () => {
     const { value: formValues } = await Swal.fire({
       title: "Register",
@@ -599,24 +616,19 @@ firstBtn.classList.add("active-portal");
 
     if (formValues) {
       try {
-        // ✅ Create account and auto-login
-        const userCredential = await auth.createUserWithEmailAndPassword(
+        const userCredential = await window.createUserWithEmailAndPassword(
+          window.auth,
           formValues.email,
           formValues.password
         );
-
-        const user = userCredential.user;
-        Swal.fire("Welcome!", `Account created and logged in as ${user.email} 🎉`, "success");
-
+        Swal.fire("Welcome!", `Account created as ${userCredential.user.email} 🎉`, "success");
       } catch (error) {
         Swal.fire("Error", error.message, "error");
       }
     }
   });
 
-  const loginBtn = document.getElementById("loginBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
-
+  // ✅ Login
   loginBtn.addEventListener("click", async () => {
     const { value: formValues } = await Swal.fire({
       title: "Login",
@@ -635,7 +647,11 @@ firstBtn.classList.add("active-portal");
 
     if (formValues) {
       try {
-        await auth.signInWithEmailAndPassword(formValues.email, formValues.password);
+        await window.signInWithEmailAndPassword(
+          window.auth,
+          formValues.email,
+          formValues.password
+        );
         Swal.fire("Welcome!", "You are now logged in 🎉", "success");
       } catch (error) {
         Swal.fire("Error", error.message, "error");
@@ -643,36 +659,37 @@ firstBtn.classList.add("active-portal");
     }
   });
 
+  // ✅ Logout
   logoutBtn.addEventListener("click", async () => {
-    await auth.signOut();
+    await window.signOut(window.auth);
     Swal.fire("Goodbye!", "You are now logged out 👋", "info");
   });
 
-const portalContent = document.getElementById("portal-content");
-
-auth.onAuthStateChanged(user => {
-  if (user) {
-    loginBtn.classList.add("hidden");
-    registerBtn.classList.add("hidden"); // ✅ hide register
-    logoutBtn.classList.remove("hidden");
-    portalContent.classList.remove("hidden"); // ✅ show guides
-  } else {
-    loginBtn.classList.remove("hidden");
-    registerBtn.classList.remove("hidden"); // ✅ show register
-    logoutBtn.classList.add("hidden");
-    portalContent.classList.add("hidden"); // ✅ hide guides
-  }
-});
+  // ✅ Auth state listener
+  window.onAuthStateChanged(window.auth, (user) => {
+    if (user) {
+      loginBtn.classList.add("hidden");
+      registerBtn.classList.add("hidden");
+      logoutBtn.classList.remove("hidden");
+      portalContent.classList.remove("hidden");
+    } else {
+      loginBtn.classList.remove("hidden");
+      registerBtn.classList.remove("hidden");
+      logoutBtn.classList.add("hidden");
+      portalContent.classList.add("hidden");
+    }
+  });
 
   // ✅ Back to Top button
-if (backToTop) {
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 200) backToTop.classList.remove('hidden');
-    else backToTop.classList.add('hidden');
-  });
-  backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script> 
+  if (backToTop) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 200) backToTop.classList.remove('hidden');
+      else backToTop.classList.add('hidden');
+    });
+    backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
 <!-- Back to Top Button -->
 <button id="back-to-top" 
   class="fixed bottom-6 right-6 bg-sky-600 text-white px-4 py-2 rounded-full shadow-lg hidden">
