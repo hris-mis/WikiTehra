@@ -20,7 +20,7 @@
     apiKey: "AIzaSyDEGYeA0ere_txZPbwxMH5-BRflZqh_ef0",
     authDomain: "wikitehra.firebaseapp.com",
     projectId: "wikitehra",
-    storageBucket: "wikitehra.firebasestorage.app",
+    storageBucket: "wikitehra.appspot.com",
     messagingSenderId: "761691537990",
     appId: "1:761691537990:web:fb6f60c918b2ddca52c047"
   };
@@ -223,16 +223,19 @@ const auth = firebase.auth();
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
-    <!-- 🔹 Login/Logout buttons -->
-  <div class="flex justify-end gap-2 p-4">
-    <button id="loginBtn" class="bg-sky-600 text-white px-4 py-2 rounded-lg shadow-md">
-      Login
-    </button>
-    <button id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hidden">
-      Logout
-    </button>
-  </div>
   <div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- 🔹 Register/Login/Logout buttons -->
+<div class="flex justify-end gap-2 p-4">
+  <button id="registerBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg shadow-md">
+    Register
+  </button>
+  <button id="loginBtn" class="bg-sky-600 text-white px-4 py-2 rounded-lg shadow-md">
+    Login
+  </button>
+  <button id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hidden">
+    Logout
+  </button>
+</div>
     <!-- HEADER -->
     <header class="pb-8">
       <div class="flex items-center justify-between bg-white/80 rounded-2xl shadow-lg px-8 py-6 mb-6 border border-slate-200">
@@ -248,7 +251,8 @@ const auth = firebase.auth();
 
     <!-- MAIN -->
     <main>
-<section id="portal-details-section">
+<div id="portal-content" class="hidden">
+  <section id="portal-details-section">
   <!-- Hero Section -->
   <section class="text-center mb-14">
     <h2 id="portal-title" class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">
@@ -565,6 +569,51 @@ firstBtn.classList.add("active-portal");
   });
 
    // 🔹 Login/Logout code starts here
+  const registerBtn = document.getElementById("registerBtn");
+
+  registerBtn.addEventListener("click", async () => {
+    const { value: formValues } = await Swal.fire({
+      title: "Register",
+      html: `
+        <input id="reg-email" type="email" class="swal2-input" placeholder="Email">
+        <input id="reg-password" type="password" class="swal2-input" placeholder="Password">
+        <input id="reg-confirm" type="password" class="swal2-input" placeholder="Confirm Password">
+      `,
+      focusConfirm: false,
+      preConfirm: () => {
+        const email = document.getElementById("reg-email").value;
+        const password = document.getElementById("reg-password").value;
+        const confirm = document.getElementById("reg-confirm").value;
+
+        if (!email || !password) {
+          Swal.showValidationMessage("Please enter email and password");
+          return false;
+        }
+        if (password !== confirm) {
+          Swal.showValidationMessage("Passwords do not match");
+          return false;
+        }
+        return { email, password };
+      }
+    });
+
+    if (formValues) {
+      try {
+        // ✅ Create account and auto-login
+        const userCredential = await auth.createUserWithEmailAndPassword(
+          formValues.email,
+          formValues.password
+        );
+
+        const user = userCredential.user;
+        Swal.fire("Welcome!", `Account created and logged in as ${user.email} 🎉`, "success");
+
+      } catch (error) {
+        Swal.fire("Error", error.message, "error");
+      }
+    }
+  });
+
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
 
@@ -599,15 +648,20 @@ firstBtn.classList.add("active-portal");
     Swal.fire("Goodbye!", "You are now logged out 👋", "info");
   });
 
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      loginBtn.classList.add("hidden");
-      logoutBtn.classList.remove("hidden");
-    } else {
-      loginBtn.classList.remove("hidden");
-      logoutBtn.classList.add("hidden");
-    }
-  });
+const portalContent = document.getElementById("portal-content");
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    loginBtn.classList.add("hidden");
+    registerBtn.classList.add("hidden"); // ✅ hide register
+    logoutBtn.classList.remove("hidden");
+    portalContent.classList.remove("hidden"); // ✅ show guides
+  } else {
+    loginBtn.classList.remove("hidden");
+    registerBtn.classList.remove("hidden"); // ✅ show register
+    logoutBtn.classList.add("hidden");
+    portalContent.classList.add("hidden"); // ✅ hide guides
+  }
 });
 
   // ✅ Back to Top button
