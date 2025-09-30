@@ -578,14 +578,13 @@ firstBtn.classList.add("active-portal");
     });
 
     if (!found) sectionsContainer.innerHTML = `<p class="text-center text-slate-500">No results</p>`;
-  });
+  }); 
 
    // 🔹 Login/Logout code starts here
   const registerBtn = document.getElementById("registerBtn");
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
   const portalContent = document.getElementById("portal-content");
-  const backToTop = document.getElementById("back-to-top");
 
   // ✅ Register
   registerBtn.addEventListener("click", async () => {
@@ -629,21 +628,36 @@ firstBtn.classList.add("active-portal");
   });
 
   // ✅ Login
-  loginBtn.addEventListener("click", async () => {
-    const { value: formValues } = await Swal.fire({
-      title: "Login",
-      html: `
-        <input id="email" type="email" class="swal2-input" placeholder="Email">
-        <input id="password" type="password" class="swal2-input" placeholder="Password">
-      `,
-      focusConfirm: false,
-      preConfirm: () => {
-        return {
-          email: document.getElementById("email").value,
-          password: document.getElementById("password").value
-        };
-      }
-    });
+loginBtn.addEventListener("click", async () => {
+  const { value: formValues } = await Swal.fire({
+    title: "Login",
+    html: `
+      <input id="email" type="email" class="swal2-input" placeholder="Email">
+      <input id="password" type="password" class="swal2-input" placeholder="Password">
+    `,
+    focusConfirm: false,
+    preConfirm: () => {
+      return {
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      };
+    }
+  });
+
+  if (formValues) {
+    try {
+      await window.signInWithEmailAndPassword(
+        window.auth,
+        formValues.email,
+        formValues.password
+      );
+
+      Swal.fire("Welcome!", "You are now logged in 🎉", "success");
+    } catch (error) {
+      Swal.fire("Error", error.message, "error");
+    }
+  }
+});
 
     if (formValues) {
       try {
@@ -651,7 +665,9 @@ firstBtn.classList.add("active-portal");
           window.auth,
           formValues.email,
           formValues.password
-        );
+
+
+
         Swal.fire("Welcome!", "You are now logged in 🎉", "success");
       } catch (error) {
         Swal.fire("Error", error.message, "error");
