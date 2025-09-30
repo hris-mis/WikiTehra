@@ -30,6 +30,8 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  console.log("✅ Firebase Auth initialized", auth);
+
 
   // Expose auth globally so your other script (below) can use it
   window.auth = auth;
@@ -320,7 +322,25 @@
 <!-- Your custom script -->
 <script type="module">
 console.log("✅ Custom script loaded");
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("✅ DOM fully loaded and parsed");
+
+  const loginBtn = document.getElementById("loginBtn");
+  if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+      console.log("✅ Login button clicked");
+    });
+  }
+
+  const registerBtn = document.getElementById("registerBtn");
+  if (registerBtn) {
+    registerBtn.addEventListener("click", () => {
+      console.log("✅ Register button clicked");
+    });
+  }
+});
+
 // Swal.fire("Hi!", "SweetAlert2 is working 🎉", "success");
 
   // ✅ all your existing WikiTEHRA code here...
