@@ -627,8 +627,10 @@ firstBtn.classList.add("active-portal");
     }
   });
 
-  // ✅ Login
+// ✅ Login
 loginBtn.addEventListener("click", async () => {
+  console.log("✅ Login button clicked"); // debug log
+
   const { value: formValues } = await Swal.fire({
     title: "Login",
     html: `
@@ -651,30 +653,12 @@ loginBtn.addEventListener("click", async () => {
         formValues.email,
         formValues.password
       );
-
       Swal.fire("Welcome!", "You are now logged in 🎉", "success");
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }
   }
 });
-
-    if (formValues) {
-      try {
-        await window.signInWithEmailAndPassword(
-          window.auth,
-          formValues.email,
-          formValues.password
-
-
-
-        Swal.fire("Welcome!", "You are now logged in 🎉", "success");
-      } catch (error) {
-        Swal.fire("Error", error.message, "error");
-      }
-    }
-  });
-
   // ✅ Logout
   logoutBtn.addEventListener("click", async () => {
     await window.signOut(window.auth);
